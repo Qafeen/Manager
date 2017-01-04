@@ -1,0 +1,2 @@
+# Manager
+Laravel Package Manager
