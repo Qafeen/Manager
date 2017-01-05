@@ -61,7 +61,6 @@ class Manager
             return $this->loadManagerFile();
         }
 
-        $this->console->info("No manager.yml file found in {$this->name} package.");
         $this->console->info("Searching {$this->directory} directory for service providers.");
 
         ManageServiceProvider::instance($this->getFiles(), $this->console)->search();
@@ -78,7 +77,11 @@ class Manager
 
     public function hasManagerFile()
     {
-        return app('filesystem')->exists($this->directory . "manager.yml");
+        if (app('filesystem')->exists($this->directory . "manager.yml")) {
+            return true;
+        }
+
+        $this->console->warn("No manager.yml file found in {$this->name} package.");
     }
 
     public function loadManagerFile()

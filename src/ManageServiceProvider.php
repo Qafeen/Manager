@@ -33,19 +33,19 @@ class ManageServiceProvider
         $sps = $this->getServiceProviders();
 
         if (! $sps->count()) {
-            $this->console->info("No service provider file found. Nothing to install.");
+            $this->console->warn("No service provider file found. Nothing to install.");
 
             return false;
         }
 
-        $this->console->info(
-            "Found {$sps->count()} Service provider" . ($sps->count() > 1 ? 's': '') . '.'
+        $this->console->line(
+            " Found {$sps->count()} Service provider" . ($sps->count() > 1 ? 's': '') . '.'
         );
 
         $sps->each(function($sp, $index) {
             $currentCount = $index + 1;
 
-            $this->console->info("  $currentCount.] $sp");
+            $this->console->line(" $currentCount. $sp");
         });
     }
 

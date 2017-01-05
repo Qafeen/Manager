@@ -37,16 +37,19 @@ class Install extends Command
         $packages = $this->getPackages();
 
         if (! $packages->count()) {
-            $this->error('No package found. Make sure you spell it correct as specified on github or packagist.');
+            $this->warn(' No package found. Make sure you spell it correct as specified on github or packagist.');
         }
 
         if ($packages->first()['name'] !== $this->getPackageName()) {
-            $this->info("\tNo package found by this name \"{$this->getPackageName()}\"");
+            $this->warn(" No package found by this name \"{$this->getPackageName()}\"");
 
             return $this->call(
                 'manager:install',
                 [
-                    'packageName' => $this->choice('These are some suggestions', $packages->pluck('name')->toArray())
+                    'packageName' => $this->choice(
+                        'These are some suggestions',
+                        $packages->pluck('name')->toArray()
+                    )
                 ]
             );
         }
@@ -67,17 +70,15 @@ class Install extends Command
 
         $process->run(function ($type, $buffer) {
             if (Process::ERR === $type) {
-                $this->error($buffer);
+                $this->warn(trim($buffer));
             } else {
-                $this->info($buffer);
+                $this->info(trim($buffer));
             }
         });
 
         if (! $process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
-
-        echo $process->getOutput();
 
         return $this;
     }
