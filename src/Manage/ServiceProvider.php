@@ -63,7 +63,9 @@ class ServiceProvider
             return $this->providers;
         }
 
-        $providers = new ClassIterator($this->finder->contains('/extends ServiceProvider/i'));
+        $providers = new ClassIterator(
+            $this->finder->contains('/class [A-Z]\w+ extends ServiceProvider/i')
+        );
 
         // ClassIterator will give you providers, class name as key and path as value
         // we only need class name for now

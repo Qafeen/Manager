@@ -57,7 +57,7 @@ class Install extends Command
         }
 
         $this
-//            ->downloadPackage()
+             ->downloadPackage()
              ->runConfiguration();
     }
 
