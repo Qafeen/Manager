@@ -1,12 +1,10 @@
 <?php
 namespace Qafeen\Manager;
 
-use Illuminate\Console\Command;
 use Exception;
+use Illuminate\Console\Command;
 use Symfony\Component\Finder\Finder;
-use hanneskod\classtools\Iterator\ClassIterator;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
+use Qafeen\Manager\Manage\ServiceProvider;
 
 /**
  * Package manager will handling installing, uninstalling or deleting packages.
@@ -63,11 +61,7 @@ class Manager
 
         $this->console->info("Searching {$this->directory} directory for service providers.");
 
-        ManageServiceProvider::instance($this->getFiles(), $this->console)->search();
-
-        if (! $this->console->confirm("Add it to your `config/app.php` file?", true)) {
-            return false;
-        }
+        ServiceProvider::instance($this->getFiles(), $this->console)->register();
     }
 
     public function getFiles()
