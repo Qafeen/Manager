@@ -4,6 +4,7 @@ namespace Qafeen\Manager;
 use Exception;
 use Illuminate\Console\Command;
 use Qafeen\Manager\Manage\ConfigFile;
+use Qafeen\Manager\Manage\Facade;
 use Qafeen\Manager\Traits\Helper;
 use Symfony\Component\Finder\Finder;
 use Qafeen\Manager\Manage\ServiceProvider;
@@ -37,13 +38,6 @@ class Manager
      * @var
      */
     protected $directory;
-
-    /**
-     * List of files package has.
-     *
-     * @var
-     */
-    protected $files;
 
     /**
      * List of service provider which package contain.
@@ -83,7 +77,9 @@ class Manager
 
         $providers = ServiceProvider::instance($this->getFiles(), $this->console)->search();
 
-        return ConfigFile::instance($providers)->generate();
+        $facades   = Facade::instance($this->getFiles(), $this->console)->search();
+
+        return ConfigFile::instance($providers, $facades)->generate();
     }
 
     /**
@@ -93,7 +89,7 @@ class Manager
      */
     public function getFiles()
     {
-        return $this->files = $this->files ?: Finder::create()->in($this->directory);
+        return Finder::create()->in($this->directory);
     }
 
     /**

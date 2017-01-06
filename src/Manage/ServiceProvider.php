@@ -23,9 +23,9 @@ class ServiceProvider
 
     public function __construct(Finder $finder, $console)
     {
-        $this->finder     = $finder;
+        $this->finder  = $finder;
 
-        $this->console    = $console;
+        $this->console = $console;
     }
 
     public function search()
@@ -37,7 +37,7 @@ class ServiceProvider
         if (! $sps->count()) {
             $this->console->warn("No service provider file found. Nothing to install.");
 
-            return false;
+            return [];
         }
 
         $this->console->line(
@@ -50,7 +50,7 @@ class ServiceProvider
             $this->console->line(" $currentCount. $sp");
         });
 
-        if (! $this->console->confirm("Register it?", true)) {
+        if (! $this->console->confirm("Register service providers?", true)) {
             return [];
         }
 
@@ -63,7 +63,7 @@ class ServiceProvider
             return $this->providers;
         }
 
-        $providers = new ClassIterator($this->finder->contains('ServiceProvider'));
+        $providers = new ClassIterator($this->finder->contains('/extends ServiceProvider/i'));
 
         // ClassIterator will give you providers, class name as key and path as value
         // we only need class name for now
