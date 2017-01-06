@@ -3,6 +3,8 @@ namespace Qafeen\Manager;
 
 use Exception;
 use Illuminate\Console\Command;
+use Qafeen\Manager\Manage\ConfigFile;
+use Qafeen\Manager\Traits\Helper;
 use Symfony\Component\Finder\Finder;
 use Qafeen\Manager\Manage\ServiceProvider;
 
@@ -13,6 +15,8 @@ use Qafeen\Manager\Manage\ServiceProvider;
  */
 class Manager
 {
+    use Helper;
+
     /**
      * Configuration detail of a given package.
      *
@@ -77,9 +81,9 @@ class Manager
             return $this->loadManagerFile();
         }
 
-        $this->console->info("Searching {$this->directory} directory for service providers.");
+        $providers = ServiceProvider::instance($this->getFiles(), $this->console)->search();
 
-        ServiceProvider::instance($this->getFiles(), $this->console)->register();
+        return ConfigFile::instance($providers)->generate();
     }
 
     /**

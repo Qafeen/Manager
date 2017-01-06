@@ -2,6 +2,8 @@
 namespace Qafeen\Manager\Manage;
 
 use hanneskod\classtools\Iterator\ClassIterator;
+use Illuminate\Filesystem\Filesystem;
+use Qafeen\Manager\Traits\Helper;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -11,6 +13,8 @@ use Symfony\Component\Finder\Finder;
  */
 class ServiceProvider
 {
+    use Helper;
+
     protected $finder;
 
     protected $console;
@@ -19,25 +23,22 @@ class ServiceProvider
 
     public function __construct(Finder $finder, $console)
     {
-        $this->finder = $finder;
+        $this->finder     = $finder;
 
-        $this->console = $console;
+        $this->console    = $console;
     }
 
-    public static function instance(Finder $finder, $console)
+    public function search()
     {
-        return (new static($finder, $console));
-    }
+        $this->console->info("Searching directory for service providers.");
 
-    public function register()
-    {
-        if (! $this->getProviders()->count()) {
+        $sps = $this->getProviders();
+
+        if (! $sps->count()) {
             $this->console->warn("No service provider file found. Nothing to install.");
 
             return false;
         }
-
-        $sps = $this->getProviders();
 
         $this->console->line(
             " Found {$sps->count()} Service provider" . ($sps->count() > 1 ? 's': '') . '.'
@@ -49,11 +50,11 @@ class ServiceProvider
             $this->console->line(" $currentCount. $sp");
         });
 
-        if ($this->console->confirm("Register it?", true)) {
-
+        if (! $this->console->confirm("Register it?", true)) {
+            return [];
         }
 
-        return true;
+        return $this->getProviders()->toArray();
     }
 
     public function getProviders()

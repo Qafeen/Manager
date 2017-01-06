@@ -97,7 +97,7 @@ class Install extends Command
      */
     public function runConfiguration()
     {
-        (new Manager($this->getPackageName(), $this))->install();
+        Manager::instance($this->getPackageName(), $this)->install();
     }
 
     /**
@@ -107,7 +107,7 @@ class Install extends Command
      */
     public function getPackages()
     {
-        return Packages::search($this->getPackageName());
+        return Packages::instance($this->getPackageName())->search();
     }
 
     /**

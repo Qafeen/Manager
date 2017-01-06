@@ -2,6 +2,7 @@
 namespace Qafeen\Manager;
 
 use GuzzleHttp\Client;
+use Qafeen\Manager\Traits\Helper;
 
 /**
  * Collection of packages
@@ -10,6 +11,8 @@ use GuzzleHttp\Client;
  */
 class Packages
 {
+    use Helper;
+
     /**
      * Packagist URL.
      */
@@ -49,22 +52,11 @@ class Packages
     }
 
     /**
-     * Search the given package by name
+     * Search the given package.
      *
-     * @param $packageName
      * @return mixed
      */
-    public static function search($packageName)
-    {
-        return (new static($packageName))->get();
-    }
-
-    /**
-     * Get the list of packages.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function get()
+    public function search()
     {
         $url = self::PACKAGIST_URL . 'search.json?q=' . $this->getPackageName();
 
