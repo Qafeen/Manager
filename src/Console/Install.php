@@ -9,7 +9,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /**
- * Install Package
+ * Install Package Command
  *
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
@@ -30,7 +30,9 @@ class Install extends Command
     protected $description = 'Install provided package.';
 
     /**
-     * Start installation process.
+     * Entry point for installation
+     *
+     * @return mixed
      */
     public function handle()
     {
@@ -58,6 +60,11 @@ class Install extends Command
              ->runConfiguration();
     }
 
+    /**
+     * Start downloading package.
+     *
+     * @return \Qafeen\Manager\Console\Install
+     */
     public function downloadPackage()
     {
         $process = new Process(
@@ -83,18 +90,35 @@ class Install extends Command
         return $this;
     }
 
+    /**
+     * Start installation process
+     *
+     * @return void
+     */
     public function runConfiguration()
     {
         (new Manager($this->getPackageName(), $this))->install();
     }
 
+    /**
+     * Search packages from packagist.org
+     *
+     * @return mixed
+     */
     public function getPackages()
     {
         return Packages::search($this->getPackageName());
     }
 
+    /**
+     * Get the package name provided by user.
+     *
+     * @return string
+     */
     public function getPackageName()
     {
-        return $this->argument('packageName');
+        $name = $this->argument('packageName');
+
+        return is_array($name) ? $name[0] : $name;
     }
 }

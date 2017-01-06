@@ -14,9 +14,7 @@ use Qafeen\Manager\Manage\ServiceProvider;
 class Manager
 {
     /**
-     * An array which will hold all commands which need to be executed once
-     * installer command "manager:install" has completed getting package from
-     * packagist.org
+     * Configuration detail of a given package.
      *
      * @var array
      */
@@ -29,20 +27,35 @@ class Manager
      */
     protected $name;
 
+    /**
+     * package directory.
+     *
+     * @var
+     */
     protected $directory;
 
+    /**
+     * List of files package has.
+     *
+     * @var
+     */
     protected $files;
 
+    /**
+     * List of service provider which package contain.
+     *
+     * @var
+     */
     protected $serviceProviders;
 
     /**
-     * @var
+     * Console class to notify user.
+     *
+     * @var \Illuminate\Console\Command
      */
     protected $console;
 
     /**
-     * Manager constructor.
-     *
      * @param  string   $name
      * @param  mixed    $console
      */
@@ -53,6 +66,11 @@ class Manager
              ->setConsole($console);
     }
 
+    /**
+     * Start installation process
+     *
+     * @return bool
+     */
     public function install()
     {
         if ($this->hasManagerFile()) {
@@ -64,11 +82,21 @@ class Manager
         ServiceProvider::instance($this->getFiles(), $this->console)->register();
     }
 
+    /**
+     * Get the package files.
+     *
+     * @return Finder|\Symfony\Component\Finder\SplFileInfo[]
+     */
     public function getFiles()
     {
         return $this->files = $this->files ?: Finder::create()->in($this->directory);
     }
 
+    /**
+     * Check manager file exists in package or not.
+     *
+     * @return bool
+     */
     public function hasManagerFile()
     {
         if (app('filesystem')->exists($this->directory . "manager.yml")) {
@@ -76,8 +104,15 @@ class Manager
         }
 
         $this->console->warn("No manager.yml file found in {$this->name} package.");
+
+        return false;
     }
 
+    /**
+     * Load the package configuration form file.
+     *
+     * @return bool
+     */
     public function loadManagerFile()
     {
         // @todo If manager.yml file is given then we don't need to search whole project
@@ -85,6 +120,13 @@ class Manager
         return false;
     }
 
+    /**
+     * Check to see if we have a valid command class to work
+     *
+     * @param  $class
+     * @return bool
+     * @throws Exception
+     */
     public function isValidConsole($class)
     {
         if ($class instanceof Command) {
@@ -94,6 +136,12 @@ class Manager
         throw new Exception(get_class($class) . " not found.");
     }
 
+    /**
+     * Set the name of the package.
+     *
+     * @param  $name
+     * @return $this
+     */
     private function setName($name)
     {
         $this->name = $name;
@@ -101,6 +149,12 @@ class Manager
         return $this;
     }
 
+    /**
+     * Set the directory of the package.
+     *
+     * @param $path
+     * @return $this
+     */
     private function setDirectory($path)
     {
         $this->directory = $path;
@@ -108,6 +162,12 @@ class Manager
         return $this;
     }
 
+    /**
+     * Set the given console class.
+     *
+     * @param $class
+     * @return $this
+     */
     private function setConsole($class)
     {
         if ($this->isValidConsole($class)) {

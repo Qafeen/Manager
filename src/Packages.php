@@ -78,11 +78,21 @@ class Packages
         return collect($this->rawPackages->get('results'));
     }
 
+    /**
+     * Get the count of the package.
+     *
+     * @return integer
+     */
     public function count()
     {
-        return $this->rawPackages->get('total');
+        return (int) $this->rawPackages->get('total');
     }
 
+    /**
+     * Get the package name
+     *
+     * @return string
+     */
     public function getPackageName()
     {
         return $this->packageName ?: '';

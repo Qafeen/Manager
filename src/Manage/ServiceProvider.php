@@ -1,5 +1,4 @@
 <?php
-
 namespace Qafeen\Manager\Manage;
 
 use hanneskod\classtools\Iterator\ClassIterator;
