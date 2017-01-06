@@ -64,7 +64,7 @@ class Facade
 
         $facades = new ClassIterator($this->finder->contains('/class [A-Z]\w+ extends Facade/i'));
 
-        // ClassIterator will give you providers, class name as key and path as value
+        // ClassIterator will give you facades, class name as key and path as value
         // we only need class name for now
         return $this->facades = collect(array_keys($facades->getClassMap()));
     }
