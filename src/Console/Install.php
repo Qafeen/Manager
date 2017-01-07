@@ -20,7 +20,7 @@ class Install extends Command
      *
      * @var string
      */
-    protected $signature = 'install {packageName : Specify Package name. eg: vendor/package}';
+    protected $signature = 'install {package : Specify Package name. eg: vendor/package:version}';
 
     /**
      * Install provided package.
@@ -36,19 +36,20 @@ class Install extends Command
      */
     public function handle()
     {
+        $packageInfo = $this->tokenizePackageInfo();
         $packages = $this->getPackages();
 
         if (! $packages->count()) {
             $this->warn(' No package found. Make sure you spell it correct as specified on github or packagist.');
         }
 
-        if ($packages->first()['name'] !== $this->getPackageName()) {
-            $this->warn(" No package found by this name \"{$this->getPackageName()}\"");
+        if ($packages->first()['name'] !== $packageInfo['name']) {
+            $this->warn(" No package found by this name \"{$packageInfo['name']}\"");
 
             return $this->call(
                 'install',
                 [
-                    'packageName' => $this->choice(
+                    'package' => $this->choice(
                         'These are some suggestions',
                         $packages->pluck('name')->toArray()
                     )
@@ -68,7 +69,7 @@ class Install extends Command
     public function downloadPackage()
     {
         $process = new Process(
-            "composer require {$this->getPackageName()}",
+            $this->composerRequire(),
             null,
             null,
             null,
@@ -97,7 +98,7 @@ class Install extends Command
      */
     public function runConfiguration()
     {
-        Manager::instance($this->getPackageName(), $this)->install();
+        Manager::instance($this->tokenizePackageInfo()['name'], $this)->install();
     }
 
     /**
@@ -107,18 +108,26 @@ class Install extends Command
      */
     public function getPackages()
     {
-        return Packages::instance($this->getPackageName())->search();
+        return Packages::instance($this->tokenizePackageInfo()['name'])->search();
     }
 
     /**
-     * Get the package name provided by user.
+     * Get the package name and version provided by user.
      *
-     * @return string
+     * @return array
      */
-    public function getPackageName()
+    public function tokenizePackageInfo()
     {
-        $name = $this->argument('packageName');
+        $info = explode(':', $this->argument('package'));
 
-        return is_array($name) ? $name[0] : $name;
+        return [
+            'name'    => $info[0],
+            'version' => (count($info) > 1) ? last($info) : null,
+        ];
+    }
+
+    public function composerRequire()
+    {
+        return "composer require {$this->argument('package')}";
     }
 }
