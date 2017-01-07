@@ -24,16 +24,16 @@ Register service provider. Possibilities are this will be your last time to do i
 
 ## We are done!
 
-Now let's install package by using our newly added manager. To search and add a package in your project then you need to run:
+Now let's install package by using our newly added manager. To search and add a package you need to run:
 ```bash
 php artisan add passport
 ```
 
-Manager will look for the package and give you the result:
+Manager will look for the package and give you the results:
 
-![Manager search result if package not found by the given name](https://cloud.githubusercontent.com/assets/7669734/21743796/b7f922e4-d52f-11e6-8d15-f746cbd8fa2d.png)
+![Manager search result if package not found by the given name](https://cloud.githubusercontent.com/assets/7669734/21744445/e128995e-d53b-11e6-9131-49da0ea65fd7.png)
 
-Once you selected your package like I selected `laravel/passport` then it will download it for you and will find service providers and facades to register.
+Once you selected a package then composer will take care to download it and Manager will find service providers and facades to register.
 
 ![Service providers and facades registration](https://cloud.githubusercontent.com/assets/7669734/21742305/de3ffcac-d511-11e6-96d9-4a9281cd736e.png)
 
