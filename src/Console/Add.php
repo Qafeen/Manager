@@ -42,12 +42,15 @@ class Add extends Command
     {
         $packageInfo = $this->tokenizePackageInfo();
         $packages    = $this->getPackages();
+        $total       = $packages->count();
 
-        if (! $packages->count()) {
+        if (! $total) {
             $this->warn(' No package found. Make sure you spell it correct as specified on github or packagist.');
         }
 
         if ($packages->first()['name'] !== $packageInfo['name']) {
+            $this->warn($total.' package'.($total > 1 ? 's' : '').' found by given name.');
+
             return $this->call('add', ['package' => $this->prettify($packages)]);
         }
 
