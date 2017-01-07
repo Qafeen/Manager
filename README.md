@@ -31,7 +31,7 @@ php artisan add passport
 
 Manager will look for the package and give you the result:
 
-![Manager search result if package not found by the given name](https://cloud.githubusercontent.com/assets/7669734/21742279/50ee9516-d511-11e6-8444-c938c0951769.png)
+![Manager search result if package not found by the given name](https://cloud.githubusercontent.com/assets/7669734/21743796/b7f922e4-d52f-11e6-8d15-f746cbd8fa2d.png)
 
 Once you selected your package like I selected `laravel/passport` then it will download it for you and will find service providers and facades to register.
 
@@ -43,7 +43,10 @@ php artisan add zizaco/entrust:5.2.x-dev
 ```
 
 ## Notes: 
-In up coming development package will also find migration files, files which need to be publish to resource or assets directory. Also custom commands which need to be run after migration which will be handled by `manager.yml` file in root directory of downloaded package. Stay tune...
+1. In the upcoming development, the package will also find migration files, files which need to be published to resource or assets directory.
+2. Custom commands which need to be run after migration which will be handled by `manager.yml` file in root directory of the downloaded package.
+3. Manager will store your service providers and facades in deferent file `config/manager.php` and will take care to load it.
+4. Stay tune...
 
 
 <a name="Contribution"></a>
