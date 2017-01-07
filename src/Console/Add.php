@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Qafeen\Manager\Manage\ConfigFile;
 use Qafeen\Manager\Manager;
 use Qafeen\Manager\Packages;
+use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -47,8 +48,6 @@ class Add extends Command
         }
 
         if ($packages->first()['name'] !== $packageInfo['name']) {
-            $this->warn(" No package found by this name \"{$packageInfo['name']}\"");
-
             return $this->call('add', ['package' => $this->prettify($packages)]);
         }
 
@@ -141,37 +140,53 @@ class Add extends Command
     {
         $summary = [];
 
-        $newLine2Tab = PHP_EOL . '       ';
-
         foreach ($packages as $key => $package) {
-            // Incrementing key by one and prettifying package result
-            $summary[$key + 1] = "{$package['name']}" .
-                " [<fg=green;options=bold>⇩</> " . number_format($package['downloads']) .
-                "  <fg=magenta;options=bold>★</> " . number_format($package['favers']) . "] " .
-                $newLine2Tab . wordwrap($package['description'], 75, $newLine2Tab) .
-            $newLine2Tab;
+            $summary[] = [
+                'id'   => $key + 1,
+                'name' => $this->prettifyPackageInfo($package),
+            ];
         }
 
-        // Note: We are incrementing key above so we need to minus it by one
-        $key = $this->askPackageKey($summary) - 1;
-
-        return $packages[$key]['name'];
+        return $packages[$this->askPackageKey($summary)]['name'];
     }
 
     /**
      * Ask user for package key
      *
-     * @param  string  $summary Package summery
-     * @return mixed
+     * @param  array $summary
+     * @return integer
      */
     public function askPackageKey($summary)
     {
-        if (! $key = collect($summary)->search($this->choice('These are some suggestions', $summary))) {
-            $this->warn('Invalid package name or number provided.');
+        $this->table(['id', 'name'], $summary);
+
+        $selected = $this->ask('Please provide an id');
+
+        $key = collect($summary)->pluck('id')->search($selected);
+
+        if (is_null($key)) {
+            $this->warn('Invalid package name or id given.');
 
             return $this->askPackageKey($summary);
         }
 
         return $key;
+    }
+
+    /**
+     * Prettify package details
+     *
+     * @param  array  $package
+     * @return string
+     */
+    private function prettifyPackageInfo($package)
+    {
+        $newLine2Tab = PHP_EOL . '       ';
+
+        return "{$package['name']}" .
+            " [<fg=green;options=bold>⇩</> " . number_format($package['downloads']) .
+            "  <fg=magenta;options=bold>★</> " . number_format($package['favers']) . "] " .
+            PHP_EOL . wordwrap($package['description']) .
+            $newLine2Tab;
     }
 }
