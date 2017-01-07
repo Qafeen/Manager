@@ -2,7 +2,7 @@
 namespace Qafeen\Manager;
 
 use Illuminate\Support\ServiceProvider;
-use Qafeen\Manager\Console\Install;
+use Qafeen\Manager\Console\Add;
 
 /**
  * Manager Service Provider.
@@ -16,7 +16,7 @@ class ManagerServiceProvider extends ServiceProvider
      * @var array
      */
     protected $commands = [
-        Install::class,
+        Add::class,
     ];
 
     /**

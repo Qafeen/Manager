@@ -15,7 +15,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
  *
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
-class Install extends Command
+class Add extends Command
 {
     /**
      * Manager install console command.
