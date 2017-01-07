@@ -12,6 +12,7 @@ use Qafeen\Manager\Manage\ServiceProvider;
 /**
  * Package manager will handling installing, uninstalling or deleting packages.
  *
+ * @package Qafeen\Manager
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
 class Manager
@@ -79,7 +80,7 @@ class Manager
 
         $facades   = Facade::instance($this->getFiles(), $this->console)->search();
 
-        return ConfigFile::instance($providers, $facades)->generate();
+        return ConfigFile::instance($providers, $facades)->make();
     }
 
     /**

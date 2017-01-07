@@ -2,25 +2,39 @@
 namespace Qafeen\Manager\Manage;
 
 use hanneskod\classtools\Iterator\ClassIterator;
-use Illuminate\Filesystem\Filesystem;
 use Qafeen\Manager\Traits\Helper;
 use Symfony\Component\Finder\Finder;
 
 /**
  * Manage Service Provider
  *
+ * @package Qafeen\Manager
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
 class ServiceProvider
 {
     use Helper;
 
+    /**
+     * @var \Symfony\Component\Finder\Finder
+     */
     protected $finder;
-
+    /**
+     * @var \Illuminate\Console\Command
+     */
     protected $console;
 
+    /**
+     * @var \Illuminate\Support\Collection
+     */
     protected $providers;
 
+    /**
+     * ServiceProvider constructor.
+     *
+     * @param  \Symfony\Component\Finder\Finder  $finder
+     * @param  \Illuminate\Console\Command  $console
+     */
     public function __construct(Finder $finder, $console)
     {
         $this->finder  = $finder;
@@ -28,6 +42,11 @@ class ServiceProvider
         $this->console = $console;
     }
 
+    /**
+     * Start searching service provider in package.
+     *
+     * @return array
+     */
     public function search()
     {
         $this->console->info("Searching directory for service providers.");
@@ -57,6 +76,11 @@ class ServiceProvider
         return $this->getProviders()->toArray();
     }
 
+    /**
+     * Get service providers
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function getProviders()
     {
         if ($this->providers) {

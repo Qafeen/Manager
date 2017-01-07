@@ -7,6 +7,7 @@ use Qafeen\Manager\Console\Add;
 /**
  * Manager Service Provider.
  *
+ * @package Qafeen\Manager
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
 class ManagerServiceProvider extends ServiceProvider

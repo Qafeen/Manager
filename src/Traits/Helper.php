@@ -4,8 +4,9 @@ namespace Qafeen\Manager\Traits;
 use Exception;
 
 /**
- * Helper trait for Qafeen/Manager
+ * Helper trait
  *
+ * @package Qafeen\Manager
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
 trait Helper

@@ -8,18 +8,34 @@ use Symfony\Component\Finder\Finder;
 /**
  * Manage Service Provider
  *
+ * @package Qafeen\Manager
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
 class Facade
 {
     use Helper;
 
+    /**
+     * @var \Symfony\Component\Finder\Finder
+     */
     protected $finder;
 
+    /**
+     * @var \Illuminate\Console\Command
+     */
     protected $console;
 
+    /**
+     * @var \Illuminate\Support\Collection
+     */
     protected $facades;
 
+    /**
+     * Facade constructor.
+     *
+     * @param  \Symfony\Component\Finder\Finder  $finder
+     * @param          $console
+     */
     public function __construct(Finder $finder, $console)
     {
         $this->finder  = $finder;
@@ -27,6 +43,11 @@ class Facade
         $this->console = $console;
     }
 
+    /**
+     * Search package by given name
+     *
+     * @return array
+     */
     public function search()
     {
         $this->console->info("Searching directory for facades(aliases).");
@@ -56,6 +77,11 @@ class Facade
         return $this->getFacades()->toArray();
     }
 
+    /**
+     * Get Facades list from the package
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function getFacades()
     {
         if ($this->facades) {

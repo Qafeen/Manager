@@ -7,6 +7,7 @@ use Qafeen\Manager\Traits\Helper;
 /**
  * Collection of packages
  *
+ * @package Qafeen\Manager
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
 class Packages

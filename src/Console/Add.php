@@ -13,6 +13,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 /**
  * Install Package Command
  *
+ * @package Qafeen\Manager
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
 class Add extends Command
@@ -48,12 +49,7 @@ class Add extends Command
         if ($packages->first()['name'] !== $packageInfo['name']) {
             $this->warn(" No package found by this name \"{$packageInfo['name']}\"");
 
-            return $this->call(
-                'add',
-                [
-                    'package' => $this->prettifyResults($packages)
-                ]
-            );
+            return $this->call('add', ['package' => $this->prettify($packages)]);
         }
 
         $this->downloadPackage()
@@ -125,12 +121,23 @@ class Add extends Command
         ];
     }
 
+    /**
+     * Create composer require command.
+     *
+     * @return string
+     */
     public function composerRequire()
     {
         return "composer require {$this->argument('package')}";
     }
 
-    public function prettifyResults(Collection $packages)
+    /**
+     * Prettify Package result
+     *
+     * @param Collection $packages
+     * @return mixed
+     */
+    public function prettify(Collection $packages)
     {
         $summary = [];
 
@@ -139,8 +146,8 @@ class Add extends Command
         foreach ($packages as $key => $package) {
             // Incrementing key by one and prettifying package result
             $summary[$key + 1] = "{$package['name']}" .
-                " [<fg=green;options=bold>⇩</> {$package['downloads']}" .
-                "  <fg=magenta;options=bold>★</> {$package['favers']}] " .
+                " [<fg=green;options=bold>⇩</> " . number_format($package['downloads']) .
+                "  <fg=magenta;options=bold>★</> " . number_format($package['favers']) . "] " .
                 $newLine2Tab . wordwrap($package['description'], 75, $newLine2Tab) .
             $newLine2Tab;
         }
@@ -151,10 +158,16 @@ class Add extends Command
         return $packages[$key]['name'];
     }
 
+    /**
+     * Ask user for package key
+     *
+     * @param  string  $summary Package summery
+     * @return mixed
+     */
     public function askPackageKey($summary)
     {
         if (! $key = collect($summary)->search($this->choice('These are some suggestions', $summary))) {
-            $this->warn('Invalid package name provided. Please provide the correct package number');
+            $this->warn('Invalid package name or number provided.');
 
             return $this->askPackageKey($summary);
         }

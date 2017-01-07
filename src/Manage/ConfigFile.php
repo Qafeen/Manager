@@ -7,18 +7,36 @@ use Qafeen\Manager\Traits\Helper;
 /**
  * Handle configuration file.
  *
+ * @package Qafeen\Manager
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
 class ConfigFile
 {
     use Helper;
 
+    /**
+     * @var array
+     */
     protected $providers;
 
+    /**
+     * Facades (aliases)
+     *
+     * @var array
+     */
     protected $aliases;
 
+    /**
+     * @var \Illuminate\Filesystem\Filesystem
+     */
     protected $filesystem;
 
+    /**
+     * ConfigFile constructor.
+     *
+     * @param  array  $providers
+     * @param  array  $aliases
+     */
     public function __construct(array $providers = [], array $aliases = [])
     {
         $this->providers  = $providers;
@@ -28,7 +46,12 @@ class ConfigFile
         $this->filesystem = new Filesystem;
     }
 
-    public function generate()
+    /**
+     * Make config/manager.php file.
+     *
+     * @return bool
+     */
+    public function make()
     {
         $content  = $this->getManagerStubContent();
 
@@ -36,11 +59,17 @@ class ConfigFile
 
         $content  = str_replace("@aliases", $this->stringify('aliases'), $content);
 
-        $this->filesystem->put($this->getManagerFile(), $content);
+        $this->filesystem->put($this->getManagerFilePath(), $content);
 
         return true;
     }
 
+    /**
+     * Get the configuration details form config/manager.php file.
+     *
+     * @param  $name
+     * @return array|mixed
+     */
     public function getFromConfig($name)
     {
         if (! $config = config("manager.$name")) {
@@ -50,21 +79,42 @@ class ConfigFile
         return $config;
     }
 
+    /**
+     * Get the content from manager stub file.
+     *
+     * @return string
+     */
     protected function getManagerStubContent()
     {
-        return file_get_contents($this->getManagerStubFile());
+        return file_get_contents($this->getManagerStubFilePath());
     }
 
-    protected function getManagerFile()
+    /**
+     * Get manager file path.
+     *
+     * @return string
+     */
+    protected function getManagerFilePath()
     {
         return config_path('manager.php');
     }
 
-    protected function getManagerStubFile()
+    /**
+     * Get manager stub file path
+     *
+     * @return string
+     */
+    protected function getManagerStubFilePath()
     {
         return realpath(__DIR__ . '/../stubs/manager.stub');
     }
 
+    /**
+     * Convert providers or facade details to template
+     *
+     * @param  $name
+     * @return string
+     */
     protected function stringify($name)
     {
         $classes = array_unique(array_merge(
@@ -91,6 +141,13 @@ class ConfigFile
         return $template;
     }
 
+    /**
+     * Make tabs and add line break dynamically
+     *
+     * @param  int  $multiply
+     * @param  bool $newline
+     * @return string
+     */
     protected function makeTabs($multiply = 1, $newline = false)
     {
         $tab = (! $newline) ? '    ' : PHP_EOL.'    ';
@@ -102,6 +159,12 @@ class ConfigFile
         return $tab . $this->makeTabs($multiply - 1);
     }
 
+    /**
+     * Suffix '::class' to class name
+     *
+     * @param  array $class
+     * @return array
+     */
     protected function suffixClass(array $class)
     {
         return array_map(function($class) {
@@ -109,6 +172,12 @@ class ConfigFile
         }, $class);
     }
 
+    /**
+     * Get the class name by given full qualified class name
+     *
+     * @param  string  $class
+     * @return mixed
+     */
     public function getClassName($class)
     {
         return preg_replace('/::class|Facade/i', '', last(explode('\\', $class)));
