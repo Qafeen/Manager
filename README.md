@@ -4,32 +4,31 @@
 
 <h1 align="center">Laravel Package Manager</h1>
 
-## Manager aims to automate package search and install functionality. 
+## Manager aims to automate package search and install functionality.
 1. Register Service provider and facade.
-2. Search relevent package.
-3. Run migration (comming soon).
-4. Run nessery command specific to a package (comming soon).
+2. Search relevant package.
+3. Run migration (coming soon).
+4. Run necessary command specific to a package (coming soon).
 
 ## Installation:
 Get manager package.
 ```bash
-  composer require Qafeen/Manager:dev-master
+  composer require qafeen/manager:dev-master
 ```
 
-Register a service provider. Possibilities are this will be your last time to do it manually.
+Register service provider. Possibilities are this will be your last time to do it manually.
 ```php
   Qafeen\Manager\ManagerServiceProvider::class,
 ```
 
 ## We are done!
 
-Now lets install package by using our newly added manager
-To Add a package in your project now you need to run:
+Now let's install package by using our newly added manager. To search and add a package in your project then you need to run:
 ```bash
 php artisan add passport
 ```
 
-Manager will look for Passport and give you the results
+Manager will look for the package and give you the result:
 
 ![Manager search result if package not found by the given name](https://cloud.githubusercontent.com/assets/7669734/21742279/50ee9516-d511-11e6-8444-c938c0951769.png)
 
@@ -37,8 +36,13 @@ Once you selected your package like I selected `laravel/passport` then it will d
 
 ![Service providers and facades registration](https://cloud.githubusercontent.com/assets/7669734/21742305/de3ffcac-d511-11e6-96d9-4a9281cd736e.png)
 
+If you are very specific to a package and know what you want to download then you can do it directly:
+```bash
+php artisan add zizaco/entrust:5.2.x-dev
+```
+
 ## Notes: 
-In up comming development package will also find migration files, files which need to be publish to resource or assets directory. Also custom commands which need to be run after migration which will be handled by `manager.yml` file in root directory of downloaded package. Stay tune...
+In up coming development package will also find migration files, files which need to be publish to resource or assets directory. Also custom commands which need to be run after migration which will be handled by `manager.yml` file in root directory of downloaded package. Stay tune...
 
 
 <a name="Contribution"></a>
