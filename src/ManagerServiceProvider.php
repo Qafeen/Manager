@@ -26,6 +26,10 @@ class ManagerServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        foreach (config('manager.providers') as $provider) {
+            $this->app->register($provider);
+        }
+
         $this->commands($this->commands);
     }
 }

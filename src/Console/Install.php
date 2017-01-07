@@ -20,7 +20,7 @@ class Install extends Command
      *
      * @var string
      */
-    protected $signature = 'manager:install {packageName : Specify Package name. eg: vendor/package}';
+    protected $signature = 'install {packageName : Specify Package name. eg: vendor/package}';
 
     /**
      * Install provided package.
@@ -46,7 +46,7 @@ class Install extends Command
             $this->warn(" No package found by this name \"{$this->getPackageName()}\"");
 
             return $this->call(
-                'manager:install',
+                'install',
                 [
                     'packageName' => $this->choice(
                         'These are some suggestions',
