@@ -3,6 +3,8 @@ namespace Qafeen\Manager\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Application;
+use Illuminate\Support\Collection;
+use Qafeen\Manager\Manage\ConfigFile;
 use Qafeen\Manager\Manager;
 use Qafeen\Manager\Packages;
 use Symfony\Component\Process\Process;
@@ -37,7 +39,7 @@ class Install extends Command
     public function handle()
     {
         $packageInfo = $this->tokenizePackageInfo();
-        $packages = $this->getPackages();
+        $packages    = $this->getPackages();
 
         if (! $packages->count()) {
             $this->warn(' No package found. Make sure you spell it correct as specified on github or packagist.');
@@ -49,10 +51,7 @@ class Install extends Command
             return $this->call(
                 'install',
                 [
-                    'package' => $this->choice(
-                        'These are some suggestions',
-                        $packages->pluck('name')->toArray()
-                    )
+                    'package' => $this->prettifyResults($packages)
                 ]
             );
         }
@@ -129,5 +128,37 @@ class Install extends Command
     public function composerRequire()
     {
         return "composer require {$this->argument('package')}";
+    }
+
+    public function prettifyResults(Collection $packages)
+    {
+        $summary = [];
+
+        $newLine2Tab = PHP_EOL . '       ';
+
+        foreach ($packages as $key => $package) {
+            // Incrementing key by one and prettifying package result
+            $summary[$key + 1] = "{$package['name']}" .
+                " [<fg=green;options=bold>⇩</> {$package['downloads']}" .
+                "  <fg=magenta;options=bold>★</> {$package['favers']}] " .
+                $newLine2Tab . wordwrap($package['description'], 75, $newLine2Tab) .
+            $newLine2Tab;
+        }
+
+        // Note: We are incrementing key above so we need to minus it by one
+        $key = $this->askPackageKey($summary) - 1;
+
+        return $packages[$key]['name'];
+    }
+
+    public function askPackageKey($summary)
+    {
+        if (! $key = collect($summary)->search($this->choice('These are some suggestions', $summary))) {
+            $this->warn('Invalid package name provided. Please provide the correct package number');
+
+            return $this->askPackageKey($summary);
+        }
+
+        return $key;
     }
 }
