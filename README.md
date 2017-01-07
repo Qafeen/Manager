@@ -9,6 +9,7 @@
 2. Search relevant package.
 3. Run migration (coming soon).
 4. Run necessary command specific to a package (coming soon).
+5. Uninstall package (comming soon).
 
 ## Installation:
 Get manager package.
