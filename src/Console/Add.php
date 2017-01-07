@@ -22,7 +22,7 @@ class Add extends Command
      *
      * @var string
      */
-    protected $signature = 'install {package : Specify Package name. eg: vendor/package:version}';
+    protected $signature = 'add {package : Specify Package name. eg: vendor/package:version}';
 
     /**
      * Install provided package.
@@ -49,7 +49,7 @@ class Add extends Command
             $this->warn(" No package found by this name \"{$packageInfo['name']}\"");
 
             return $this->call(
-                'install',
+                'add',
                 [
                     'package' => $this->prettifyResults($packages)
                 ]
@@ -63,7 +63,7 @@ class Add extends Command
     /**
      * Start downloading package.
      *
-     * @return \Qafeen\Manager\Console\Install
+     * @return \Qafeen\Manager\Console\Add
      */
     public function downloadPackage()
     {
