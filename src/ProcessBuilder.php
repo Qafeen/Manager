@@ -1,4 +1,5 @@
 <?php
+
 namespace Qafeen\Manager;
 
 use Qafeen\Manager\Traits\Helper;
@@ -6,9 +7,8 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
 /**
- * Custom Process builder
+ * Custom Process builder.
  *
- * @package Qafeen\Manager
  * @author  Mohammed Mudasir <hello@mudasir.me>
  */
 class ProcessBuilder
@@ -34,6 +34,7 @@ class ProcessBuilder
      * Run the created process builder.
      *
      * @param $command
+     *
      * @return bool
      */
     public function run($command)
@@ -54,7 +55,7 @@ class ProcessBuilder
             }
         });
 
-        if (! $process->isSuccessful()) {
+        if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
 

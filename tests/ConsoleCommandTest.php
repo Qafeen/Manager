@@ -1,4 +1,5 @@
 <?php
+
 use Mockery as m;
 
 class ConsoleCommandTest extends PHPUnit_Framework_TestCase

@@ -1,15 +1,14 @@
 <?php
+
 namespace Qafeen\Manager\Manage;
 
 use hanneskod\classtools\Iterator\ClassIterator;
-use Qafeen\Manager\ProcessBuilder;
 use Qafeen\Manager\Traits\Helper;
 use Symfony\Component\Finder\Finder;
 
 /**
- * Manage Migration
+ * Manage Migration.
  *
- * @package Qafeen\Manager
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
 class Migration
@@ -39,7 +38,7 @@ class Migration
     protected $registered = false;
 
     /**
-     * Count of migration files
+     * Count of migration files.
      *
      * @var int
      */
@@ -48,18 +47,18 @@ class Migration
     /**
      * Facade constructor.
      *
-     * @param  \Symfony\Component\Finder\Finder  $finder
-     * @param          $console
+     * @param \Symfony\Component\Finder\Finder $finder
+     * @param                                  $console
      */
     public function __construct(Finder $finder, $console)
     {
-        $this->finder  = $finder;
+        $this->finder = $finder;
 
         $this->console = $console;
     }
 
     /**
-     * File registered and migration ran successfully
+     * File registered and migration ran successfully.
      *
      * @return bool
      */
@@ -85,20 +84,19 @@ class Migration
     }
 
     /**
-     * Search package by given name
+     * Search package by given name.
      *
      * @return bool
      */
     public function search()
     {
-        $this->console->info("Searching directory for Migrations.");
+        $this->console->info('Searching directory for Migrations.');
 
-        return $this->hasMigrationFile() ? $this->console->confirm("Run migrations?", true): false;
+        return $this->hasMigrationFile() ? $this->console->confirm('Run migrations?', true) : false;
     }
 
     /**
-     *
-     * Get Migration file list from the package
+     * Get Migration file list from the package.
      *
      * @return bool
      */

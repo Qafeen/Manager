@@ -1,4 +1,5 @@
 <?php
+
 namespace Qafeen\Manager\Manage;
 
 use Illuminate\Filesystem\Filesystem;
@@ -7,7 +8,6 @@ use Qafeen\Manager\Traits\Helper;
 /**
  * Handle configuration file.
  *
- * @package Qafeen\Manager
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
 class ConfigFile
@@ -20,7 +20,7 @@ class ConfigFile
     protected $providers;
 
     /**
-     * Facades (aliases)
+     * Facades (aliases).
      *
      * @var array
      */
@@ -34,16 +34,16 @@ class ConfigFile
     /**
      * ConfigFile constructor.
      *
-     * @param  array  $providers
-     * @param  array  $aliases
+     * @param array $providers
+     * @param array $aliases
      */
     public function __construct(array $providers = [], array $aliases = [])
     {
-        $this->providers  = $providers;
+        $this->providers = $providers;
 
-        $this->aliases    = $aliases;
+        $this->aliases = $aliases;
 
-        $this->filesystem = new Filesystem;
+        $this->filesystem = new Filesystem();
     }
 
     /**
@@ -53,11 +53,11 @@ class ConfigFile
      */
     public function make()
     {
-        $content  = $this->getManagerStubContent();
+        $content = $this->getManagerStubContent();
 
-        $content  = str_replace("@providers", $this->stringify('providers'), $content);
+        $content = str_replace('@providers', $this->stringify('providers'), $content);
 
-        $content  = str_replace("@aliases", $this->stringify('aliases'), $content);
+        $content = str_replace('@aliases', $this->stringify('aliases'), $content);
 
         $this->filesystem->put($this->getManagerFilePath(), $content);
 
@@ -68,11 +68,12 @@ class ConfigFile
      * Get the configuration details form config/manager.php file.
      *
      * @param  $name
+     *
      * @return array|mixed
      */
     public function getFromConfig($name)
     {
-        if (! $config = config("manager.$name")) {
+        if (!$config = config("manager.$name")) {
             return [];
         }
 
@@ -100,19 +101,20 @@ class ConfigFile
     }
 
     /**
-     * Get manager stub file path
+     * Get manager stub file path.
      *
      * @return string
      */
     protected function getManagerStubFilePath()
     {
-        return realpath(__DIR__ . '/../stubs/manager.stub');
+        return realpath(__DIR__.'/../stubs/manager.stub');
     }
 
     /**
-     * Convert providers or facade details to template
+     * Convert providers or facade details to template.
      *
      * @param  $name
+     *
      * @return string
      */
     protected function stringify($name)
@@ -127,7 +129,7 @@ class ConfigFile
         if ($name == 'providers') {
             return "'$name' => [$newLine2Tabs".
                         implode(','.$newLine2Tabs, $classes).
-                    $this->makeTabs(1, true)."],".PHP_EOL;
+                    $this->makeTabs(1, true).'],'.PHP_EOL;
         }
 
         $template = "'$name' => [$newLine2Tabs";
@@ -136,46 +138,49 @@ class ConfigFile
             $template .= "'{$this->getClassName($fullClassName)}' => $fullClassName,$newLine2Tabs";
         }
 
-        $template .= $this->makeTabs(1, true)."],".PHP_EOL;
+        $template .= $this->makeTabs(1, true).'],'.PHP_EOL;
 
         return $template;
     }
 
     /**
-     * Make tabs and add line break dynamically
+     * Make tabs and add line break dynamically.
      *
-     * @param  int  $multiply
-     * @param  bool $newline
+     * @param int  $multiply
+     * @param bool $newline
+     *
      * @return string
      */
     protected function makeTabs($multiply = 1, $newline = false)
     {
-        $tab = (! $newline) ? '    ' : PHP_EOL.'    ';
+        $tab = (!$newline) ? '    ' : PHP_EOL.'    ';
 
         if ($multiply == 0) {
             return '';
         }
 
-        return $tab . $this->makeTabs($multiply - 1);
+        return $tab.$this->makeTabs($multiply - 1);
     }
 
     /**
-     * Suffix '::class' to class name
+     * Suffix '::class' to class name.
      *
-     * @param  array $class
+     * @param array $class
+     *
      * @return array
      */
     protected function suffixClass(array $class)
     {
-        return array_map(function($class) {
+        return array_map(function ($class) {
             return "$class::class";
         }, $class);
     }
 
     /**
-     * Get the class name by given full qualified class name
+     * Get the class name by given full qualified class name.
      *
-     * @param  string  $class
+     * @param string $class
+     *
      * @return mixed
      */
     public function getClassName($class)

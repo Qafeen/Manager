@@ -1,4 +1,5 @@
 <?php
+
 namespace Qafeen\Manager\Manage;
 
 use hanneskod\classtools\Iterator\ClassIterator;
@@ -6,9 +7,8 @@ use Qafeen\Manager\Traits\Helper;
 use Symfony\Component\Finder\Finder;
 
 /**
- * Manage Service Provider
+ * Manage Service Provider.
  *
- * @package Qafeen\Manager
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
 class ServiceProvider
@@ -34,16 +34,15 @@ class ServiceProvider
     /**
      * ServiceProvider constructor.
      *
-     * @param  \Symfony\Component\Finder\Finder  $finder
-     * @param  \Illuminate\Console\Command  $console
+     * @param \Symfony\Component\Finder\Finder $finder
+     * @param \Illuminate\Console\Command      $console
      */
     public function __construct(Finder $finder, $console)
     {
-        $this->finder  = $finder;
+        $this->finder = $finder;
 
         $this->console = $console;
     }
-
 
     public function isRegistered()
     {
@@ -57,27 +56,27 @@ class ServiceProvider
      */
     public function search()
     {
-        $this->console->info("Searching directory for service providers.");
+        $this->console->info('Searching directory for service providers.');
 
         $sps = $this->getProviders();
 
-        if (! $sps->count()) {
-            $this->console->warn("No service provider file found. Nothing to install.");
+        if (!$sps->count()) {
+            $this->console->warn('No service provider file found. Nothing to install.');
 
             return [];
         }
 
         $this->console->line(
-            " Found {$sps->count()} Service provider" . ($sps->count() > 1 ? 's': '') . '.'
+            " Found {$sps->count()} Service provider".($sps->count() > 1 ? 's' : '').'.'
         );
 
-        $sps->each(function($sp, $index) {
+        $sps->each(function ($sp, $index) {
             $currentCount = $index + 1;
 
             $this->console->line(" $currentCount. $sp");
         });
 
-        if (! $this->console->confirm("Register service providers?", true)) {
+        if (!$this->console->confirm('Register service providers?', true)) {
             return [];
         }
 
@@ -87,7 +86,7 @@ class ServiceProvider
     }
 
     /**
-     * Get service providers
+     * Get service providers.
      *
      * @return \Illuminate\Support\Collection
      */
@@ -107,7 +106,7 @@ class ServiceProvider
     }
 
     /**
-     * Get service providers count
+     * Get service providers count.
      *
      * @return int
      */

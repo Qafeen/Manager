@@ -1,4 +1,5 @@
 <?php
+
 namespace Qafeen\Manager\Manage;
 
 use hanneskod\classtools\Iterator\ClassIterator;
@@ -6,9 +7,8 @@ use Qafeen\Manager\Traits\Helper;
 use Symfony\Component\Finder\Finder;
 
 /**
- * Manage Service Provider
+ * Manage Service Provider.
  *
- * @package Qafeen\Manager
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
 class Facade
@@ -35,18 +35,18 @@ class Facade
     /**
      * Facade constructor.
      *
-     * @param  \Symfony\Component\Finder\Finder  $finder
-     * @param          $console
+     * @param \Symfony\Component\Finder\Finder $finder
+     * @param                                  $console
      */
     public function __construct(Finder $finder, $console)
     {
-        $this->finder  = $finder;
+        $this->finder = $finder;
 
         $this->console = $console;
     }
 
     /**
-     * Is file registered in config/manger.php
+     * Is file registered in config/manger.php.
      *
      * @return bool
      */
@@ -56,33 +56,33 @@ class Facade
     }
 
     /**
-     * Search package by given name
+     * Search package by given name.
      *
      * @return array
      */
     public function search()
     {
-        $this->console->info("Searching directory for facades(aliases).");
+        $this->console->info('Searching directory for facades(aliases).');
 
         $facades = $this->getFacades();
 
-        if (! $facades->count()) {
-            $this->console->warn("No facades file found. Nothing to install.");
+        if (!$facades->count()) {
+            $this->console->warn('No facades file found. Nothing to install.');
 
             return [];
         }
 
         $this->console->line(
-            " Found {$facades->count()} facade" . ($facades->count() > 1 ? 's': '') . '.'
+            " Found {$facades->count()} facade".($facades->count() > 1 ? 's' : '').'.'
         );
 
-        $facades->each(function($facade, $index) {
+        $facades->each(function ($facade, $index) {
             $currentCount = $index + 1;
 
             $this->console->line(" $currentCount. $facade");
         });
 
-        if (! $this->console->confirm("Register facades?", true)) {
+        if (!$this->console->confirm('Register facades?', true)) {
             return [];
         }
 
@@ -92,7 +92,7 @@ class Facade
     }
 
     /**
-     * Get Facades list from the package
+     * Get Facades list from the package.
      *
      * @return \Illuminate\Support\Collection
      */
@@ -110,7 +110,7 @@ class Facade
     }
 
     /**
-     * Get facades count
+     * Get facades count.
      *
      * @return int
      */

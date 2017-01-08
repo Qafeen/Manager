@@ -1,13 +1,13 @@
 <?php
+
 namespace Qafeen\Manager;
 
 use GuzzleHttp\Client;
 use Qafeen\Manager\Traits\Helper;
 
 /**
- * Collection of packages
+ * Collection of packages.
  *
- * @package Qafeen\Manager
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
 class Packages
@@ -20,7 +20,7 @@ class Packages
     const PACKAGIST_URL = 'https://packagist.org/';
 
     /**
-     * Guzzle HTTP client
+     * Guzzle HTTP client.
      *
      * @var \GuzzleHttp\Client
      */
@@ -43,11 +43,11 @@ class Packages
     /**
      * Packages constructor.
      *
-     * @param  string $packageName
+     * @param string $packageName
      */
     public function __construct($packageName = null)
     {
-        $this->client      = new Client;
+        $this->client = new Client();
 
         $this->packageName = $packageName;
     }
@@ -59,7 +59,7 @@ class Packages
      */
     public function search()
     {
-        $url = self::PACKAGIST_URL . 'search.json?q=' . $this->getPackageName();
+        $url = self::PACKAGIST_URL.'search.json?q='.$this->getPackageName();
 
         $response = $this->client
                          ->get($url)
@@ -74,7 +74,7 @@ class Packages
     /**
      * Get the count of the package.
      *
-     * @return integer
+     * @return int
      */
     public function count()
     {
@@ -82,7 +82,7 @@ class Packages
     }
 
     /**
-     * Get the package name
+     * Get the package name.
      *
      * @return string
      */
@@ -91,4 +91,3 @@ class Packages
         return $this->packageName ?: '';
     }
 }
-

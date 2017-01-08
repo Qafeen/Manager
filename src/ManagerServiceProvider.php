@@ -1,4 +1,5 @@
 <?php
+
 namespace Qafeen\Manager;
 
 use Illuminate\Support\ServiceProvider;
@@ -7,13 +8,13 @@ use Qafeen\Manager\Console\Add;
 /**
  * Manager Service Provider.
  *
- * @package Qafeen\Manager
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
 class ManagerServiceProvider extends ServiceProvider
 {
     /**
      * Commands which need to be registered.
+     *
      * @var array
      */
     protected $commands = [
