@@ -4,6 +4,13 @@
 
 <h1 align="center">Laravel Package Manager</h1>
 
+<p align="center">
+<a href="https://travis-ci.org/Qafeen/Manager"><img src="https://travis-ci.org/Qafeen/Manager.svg?branch=master" /></a> 
+<a href="https://packagist.org/packages/qafeen/manager"><img src="https://poser.pugx.org/qafeen/manager/v/stable" /></a> <a href="https://codeclimate.com/github/Qafeen/Manager"><img src="https://codeclimate.com/github/Qafeen/Manager/badges/gpa.svg" /></a> 
+<a href="https://packagist.org/packages/qafeen/manager"><img src="https://poser.pugx.org/qafeen/manager/v/unstable" /></a> <a href="https://packagist.org/packages/qafeen/manager"><img src="https://poser.pugx.org/qafeen/manager/license" /></a> 
+</p>
+
+
 ## Manager aims to automate package search and install functionality.
 1. Register Service provider and facade.
 2. Search relevant package.
