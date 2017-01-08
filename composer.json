@@ -2,7 +2,6 @@
     "name": "qafeen/manager",
     "description": "Manage, install and search laravel base packages.",
     "keywords": ["package", "laravel", "package manager"],
-    "type": "package",
     "authors": [
         {
             "name": "Mohammed Mudasir",
@@ -14,11 +13,10 @@
         "laravel/framework": "^5.1",
         "guzzlehttp/guzzle": "~6.0",
         "hanneskod/classtools": "~1.0",
-        "symfony/yaml": "^3.2",
         "symfony/process": ">=2.7"
     },
     "require-dev": {
-        "phpunit/phpunit": "~5.0"
+        "phpunit/phpunit": "5.5.*"
     },
     "autoload": {
         "psr-4": {
