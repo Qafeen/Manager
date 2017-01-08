@@ -1,7 +1,8 @@
 <?php
+
 use Mockery as m;
-use Qafeen\Manager\Manage\Migration;
 use Qafeen\Manager\Manage\Facade;
+use Qafeen\Manager\Manage\Migration;
 use Qafeen\Manager\Manage\ServiceProvider;
 use Qafeen\Manager\Packages;
 use Symfony\Component\Finder\Finder;

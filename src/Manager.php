@@ -1,20 +1,20 @@
 <?php
+
 namespace Qafeen\Manager;
 
-use Exception;
 use ErrorException;
+use Exception;
 use Illuminate\Console\Command;
 use Qafeen\Manager\Manage\ConfigFile;
 use Qafeen\Manager\Manage\Facade;
 use Qafeen\Manager\Manage\Migration;
+use Qafeen\Manager\Manage\ServiceProvider;
 use Qafeen\Manager\Traits\Helper;
 use Symfony\Component\Finder\Finder;
-use Qafeen\Manager\Manage\ServiceProvider;
 
 /**
  * Package manager will handling installing, uninstalling or deleting packages.
  *
- * @package Qafeen\Manager
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
 class Manager
@@ -43,7 +43,7 @@ class Manager
     protected $directory;
 
     /**
-     * List of service providers
+     * List of service providers.
      *
      * @var \Qafeen\Manager\Manage\ServiceProvider
      */
@@ -67,17 +67,17 @@ class Manager
     protected $console;
 
     /**
-     * List of package files
+     * List of package files.
      *
      * @var \Symfony\Component\Finder\Finder
      */
     protected $files;
 
     /**
-     * @param  string   $name
-     * @param  mixed    $console
+     * @param string $name
+     * @param mixed  $console
      */
-    public function __construct($name = null, $console)
+    public function __construct($name, $console)
     {
         $this->setName($name)
              ->setDirectory("vendor/$name/")
@@ -111,10 +111,11 @@ class Manager
     }
 
     /**
-     * Start installation process
+     * Start installation process.
+     *
+     * @throws ErrorException
      *
      * @return bool
-     * @throws ErrorException
      */
     public function install()
     {
@@ -122,9 +123,9 @@ class Manager
             return $this->loadManagerFile();
         }
 
-        if (! $this->build()) {
-            throw new ErrorException("Unable to register providers and facades. 
-                Please report this incident at Qafeen/Manager");
+        if (!$this->build()) {
+            throw new ErrorException('Unable to register providers and facades. 
+                Please report this incident at Qafeen/Manager');
         }
 
         $this->getMigration()->run();
@@ -151,7 +152,7 @@ class Manager
      */
     public function hasManagerFile()
     {
-        if (app('filesystem')->exists($this->directory . "manager.yml")) {
+        if (app('filesystem')->exists($this->directory.'manager.yml')) {
             return true;
         }
 
@@ -173,11 +174,13 @@ class Manager
     }
 
     /**
-     * Check to see if we have a valid command class to work
+     * Check to see if we have a valid command class to work.
      *
      * @param  $class
-     * @return bool
+     *
      * @throws Exception
+     *
+     * @return bool
      */
     public function isValidConsole($class)
     {
@@ -185,13 +188,14 @@ class Manager
             return true;
         }
 
-        throw new Exception(get_class($class) . " not found.");
+        throw new Exception(get_class($class).' not found.');
     }
 
     /**
      * Set the name of the package.
      *
      * @param  $name
+     *
      * @return $this
      */
     private function setName($name)
@@ -205,6 +209,7 @@ class Manager
      * Set the directory of the package.
      *
      * @param $path
+     *
      * @return $this
      */
     private function setDirectory($path)
@@ -218,6 +223,7 @@ class Manager
      * Set the given console class.
      *
      * @param $class
+     *
      * @return $this
      */
     private function setConsole($class)
@@ -246,4 +252,3 @@ class Manager
         }
     }
 }
-
