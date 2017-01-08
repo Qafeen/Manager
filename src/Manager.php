@@ -2,9 +2,11 @@
 namespace Qafeen\Manager;
 
 use Exception;
+use ErrorException;
 use Illuminate\Console\Command;
 use Qafeen\Manager\Manage\ConfigFile;
 use Qafeen\Manager\Manage\Facade;
+use Qafeen\Manager\Manage\Migration;
 use Qafeen\Manager\Traits\Helper;
 use Symfony\Component\Finder\Finder;
 use Qafeen\Manager\Manage\ServiceProvider;
@@ -55,6 +57,13 @@ class Manager
     protected $console;
 
     /**
+     * List of package files
+     *
+     * @var \Symfony\Component\Finder\Finder
+     */
+    protected $files;
+
+    /**
      * @param  string   $name
      * @param  mixed    $console
      */
@@ -69,6 +78,7 @@ class Manager
      * Start installation process
      *
      * @return bool
+     * @throws ErrorException
      */
     public function install()
     {
@@ -76,21 +86,43 @@ class Manager
             return $this->loadManagerFile();
         }
 
-        $providers = ServiceProvider::instance($this->getFiles(), $this->console)->search();
+        $providers = new ServiceProvider(clone $this->getFiles(), $this->console);
 
-        $facades   = Facade::instance($this->getFiles(), $this->console)->search();
+        $facades   = new Facade(clone $this->getFiles(), $this->console);
 
-        return ConfigFile::instance($providers, $facades)->make();
+        if (! ConfigFile::instance($providers->search(), $facades->search())->make()) {
+            throw new ErrorException("Unable to register providers and facades. 
+                Please report this incident at Qafeen/Manager");
+        }
+
+        $migration = new Migration(clone $this->getFiles(), $this->console);
+        $migration->run();
+
+        $this->console->line('');
+
+        if ($providers->isRegistered()) {
+            $this->console->line(" <fg=green;bold>✓</> {$providers->count()} service provider registered.");
+        }
+
+        if ($facades->isRegistered()) {
+            $this->console->line(" <fg=green;bold>✓</> {$facades->count()} registered.");
+        }
+
+        if ($migration->isRegistered()) {
+            $this->console->line(" <fg=green;bold>✓</> {$migration->count()} migration file ran.");
+        }
+
+        return true;
     }
 
     /**
      * Get the package files.
      *
-     * @return Finder|\Symfony\Component\Finder\SplFileInfo[]
+     * @return \Symfony\Component\Finder\Finder
      */
     public function getFiles()
     {
-        return Finder::create()->in($this->directory);
+        return $this->files ?: $this->files = Finder::create()->in($this->directory);
     }
 
     /**

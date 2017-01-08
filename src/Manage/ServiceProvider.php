@@ -29,6 +29,8 @@ class ServiceProvider
      */
     protected $providers;
 
+    protected $registered = false;
+
     /**
      * ServiceProvider constructor.
      *
@@ -40,6 +42,11 @@ class ServiceProvider
         $this->finder  = $finder;
 
         $this->console = $console;
+    }
+
+    public function isRegistered()
+    {
+        return $this->registered;
     }
 
     /**
@@ -73,6 +80,8 @@ class ServiceProvider
             return [];
         }
 
+        $this->registered = true;
+
         return $this->getProviders()->toArray();
     }
 
@@ -94,5 +103,15 @@ class ServiceProvider
         // ClassIterator will give you providers, class name as key and path as value
         // we only need class name for now
         return $this->providers = collect(array_keys($providers->getClassMap()));
+    }
+
+    /**
+     * Get service providers count
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return $this->providers->count();
     }
 }

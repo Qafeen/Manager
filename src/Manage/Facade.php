@@ -30,6 +30,8 @@ class Facade
      */
     protected $facades;
 
+    protected $registered = false;
+
     /**
      * Facade constructor.
      *
@@ -41,6 +43,11 @@ class Facade
         $this->finder  = $finder;
 
         $this->console = $console;
+    }
+
+    public function isRegistered()
+    {
+        return $this->registered;
     }
 
     /**
@@ -74,6 +81,8 @@ class Facade
             return [];
         }
 
+        $this->registered = true;
+
         return $this->getFacades()->toArray();
     }
 
@@ -93,5 +102,15 @@ class Facade
         // ClassIterator will give you facades, class name as key and path as value
         // we only need class name for now
         return $this->facades = collect(array_keys($facades->getClassMap()));
+    }
+
+    /**
+     * Get facades count
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return $this->facades->count();
     }
 }

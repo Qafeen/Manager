@@ -2,14 +2,10 @@
 namespace Qafeen\Manager\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Console\Application;
 use Illuminate\Support\Collection;
-use Qafeen\Manager\Manage\ConfigFile;
 use Qafeen\Manager\Manager;
 use Qafeen\Manager\Packages;
-use Symfony\Component\Console\Helper\TableSeparator;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
+use Qafeen\Manager\ProcessBuilder;
 
 /**
  * Install Package Command
@@ -65,25 +61,7 @@ class Add extends Command
      */
     public function downloadPackage()
     {
-        $process = new Process(
-            $this->composerRequire(),
-            null,
-            null,
-            null,
-            ini_get('max_execution_time')
-        );
-
-        $process->run(function ($type, $buffer) {
-            if (Process::ERR === $type) {
-                $this->warn(trim($buffer));
-            } else {
-                $this->info(trim($buffer));
-            }
-        });
-
-        if (! $process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
+        ProcessBuilder::instance($this)->run($this->composerRequire());
 
         return $this;
     }
@@ -156,21 +134,22 @@ class Add extends Command
     /**
      * Ask user for package key
      *
-     * @param  array $summary
-     * @return integer
+     * @param        $summary
+     * @param string $message
+     * @return mixed
      */
-    public function askPackageKey($summary)
+    public function askPackageKey($summary, $message = 'Please provide an id')
     {
         $this->table(['id', 'name'], $summary);
 
-        $selected = $this->ask('Please provide an id');
+        $selected = $this->ask($message);
 
         $key = collect($summary)->pluck('id')->search($selected);
 
-        if (is_null($key)) {
+        if ($key === false) {
             $this->warn('Invalid package name or id given.');
 
-            return $this->askPackageKey($summary);
+            return $this->askPackageKey($summary, 'Please provide a valid id');
         }
 
         return $key;
@@ -185,11 +164,19 @@ class Add extends Command
     private function prettifyPackageInfo($package)
     {
         $newLine2Tab = PHP_EOL . '       ';
+        $downloads   = number_format($package['downloads']);
+        $stars       = number_format($package['favers']);
 
-        return "{$package['name']}" .
-            " [<fg=green;options=bold>⇩</> " . number_format($package['downloads']) .
-            "  <fg=magenta;options=bold>★</> " . number_format($package['favers']) . "] " .
-            PHP_EOL . wordwrap($package['description']) .
+        $reputation = " [<fg=green;options=bold>⇩ $downloads</>" .
+                      " <fg=magenta;options=bold>★ $stars</>]";
+
+        $holdSpace = strlen($package['name'] . $downloads . $stars);
+
+        $insertSpace = str_repeat(' ', 65 - $holdSpace);
+
+        return "<fg=yellow>{$package['name']}</>" . $insertSpace . $reputation . PHP_EOL .
+                wordwrap($package['description']) . PHP_EOL .
+                $package['repository'] .
             $newLine2Tab;
     }
 }
