@@ -7,7 +7,7 @@
 ## Manager aims to automate package search and install functionality.
 1. Register Service provider and facade.
 2. Search relevant package.
-3. Run migration (coming soon).
+3. Run migration.
 4. Run necessary command specific to a package (coming soon).
 5. Uninstall package (comming soon).
 
@@ -43,9 +43,9 @@ php artisan add zizaco/entrust:5.2.x-dev
 ```
 
 ## Notes: 
-1. In the upcoming development, the package will also find migration files, files which need to be published to resource or assets directory.
+1. In the upcoming development, the package will also find files which need to be published to resource or assets directory.
 2. Custom commands which need to be run after migration which will be handled by `manager.yml` file in root directory of the downloaded package.
-3. Manager will store your service providers and facades in deferent file `config/manager.php` and will take care to load it.
+3. Manager store your service providers and facades in different file `config/manager.php` and will take care to load it.
 4. Stay tune...
 
 
