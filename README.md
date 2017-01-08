@@ -14,7 +14,7 @@
 ## Installation:
 Get manager package.
 ```bash
-  composer require qafeen/manager:dev-master
+  composer require qafeen/manager
 ```
 
 Register service provider. Possibilities are this will be your last time to do it manually.
@@ -31,9 +31,9 @@ php artisan add passport
 
 Manager will look for the package and give you the results:
 
-![Manager search result if package not found by the given name](https://cloud.githubusercontent.com/assets/7669734/21744445/e128995e-d53b-11e6-9131-49da0ea65fd7.png)
+![Manager search result if package not found by the given name](https://cloud.githubusercontent.com/assets/7669734/21749504/a17d7970-d5c5-11e6-9104-6edb414d0502.png)
 
-Once you selected a package then composer will take care to download it and Manager will find service providers and facades to register.
+Once you selected a package then composer will take care to download it and Manager will find service providers and facades to register. Also manager will look for migration files to run.
 
 ![Service providers and facades registration](https://cloud.githubusercontent.com/assets/7669734/21742305/de3ffcac-d511-11e6-96d9-4a9281cd736e.png)
 
