@@ -26,16 +26,21 @@ class Migration
      */
     protected $console;
 
+    /**
+     * @var bool
+     */
     protected $hasMigrationFile;
 
     /**
      * Is file registered.
+     *
      * @var bool
      */
     protected $registered = false;
 
     /**
      * Count of migration files
+     *
      * @var int
      */
     protected $count = 0;
@@ -53,6 +58,11 @@ class Migration
         $this->console = $console;
     }
 
+    /**
+     * File registered and migration ran successfully
+     *
+     * @return bool
+     */
     public function isRegistered()
     {
         return $this->registered;

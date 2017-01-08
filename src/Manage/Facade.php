@@ -45,6 +45,11 @@ class Facade
         $this->console = $console;
     }
 
+    /**
+     * Is file registered in config/manger.php
+     *
+     * @return bool
+     */
     public function isRegistered()
     {
         return $this->registered;

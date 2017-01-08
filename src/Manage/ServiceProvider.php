@@ -44,6 +44,7 @@ class ServiceProvider
         $this->console = $console;
     }
 
+
     public function isRegistered()
     {
         return $this->registered;

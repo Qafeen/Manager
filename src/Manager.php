@@ -38,16 +38,26 @@ class Manager
     /**
      * package directory.
      *
-     * @var
+     * @var string
      */
     protected $directory;
 
     /**
-     * List of service provider which package contain.
+     * List of service providers
      *
-     * @var
+     * @var \Qafeen\Manager\Manage\ServiceProvider
      */
-    protected $serviceProviders;
+    protected $providers;
+
+    /**
+     * @var \Qafeen\Manager\Manage\Facade
+     */
+    protected $facades;
+
+    /**
+     * @var \Qafeen\Manager\Manage\Migration
+     */
+    protected $migration;
 
     /**
      * Console class to notify user.
@@ -74,6 +84,32 @@ class Manager
              ->setConsole($console);
     }
 
+    public function build()
+    {
+        return ConfigFile::instance(
+                    $this->getProviders()->search(),
+                    $this->getFacades()->search()
+                )->make();
+    }
+
+    public function getProviders()
+    {
+        return $this->providers ?:
+            $this->providers = new ServiceProvider(clone $this->getFiles(), $this->console);
+    }
+
+    public function getFacades()
+    {
+        return $this->facades ?:
+            $this->facades = new Facade(clone $this->getFiles(), $this->console);
+    }
+
+    public function getMigration()
+    {
+        return $this->migration ?:
+            $this->migration = new Migration(clone $this->getFiles(), $this->console);
+    }
+
     /**
      * Start installation process
      *
@@ -86,31 +122,14 @@ class Manager
             return $this->loadManagerFile();
         }
 
-        $providers = new ServiceProvider(clone $this->getFiles(), $this->console);
-
-        $facades   = new Facade(clone $this->getFiles(), $this->console);
-
-        if (! ConfigFile::instance($providers->search(), $facades->search())->make()) {
+        if (! $this->build()) {
             throw new ErrorException("Unable to register providers and facades. 
                 Please report this incident at Qafeen/Manager");
         }
 
-        $migration = new Migration(clone $this->getFiles(), $this->console);
-        $migration->run();
+        $this->getMigration()->run();
 
-        $this->console->line('');
-
-        if ($providers->isRegistered()) {
-            $this->console->line(" <fg=green;bold>✓</> {$providers->count()} service provider registered.");
-        }
-
-        if ($facades->isRegistered()) {
-            $this->console->line(" <fg=green;bold>✓</> {$facades->count()} registered.");
-        }
-
-        if ($migration->isRegistered()) {
-            $this->console->line(" <fg=green;bold>✓</> {$migration->count()} migration file ran.");
-        }
+        $this->notifyUser();
 
         return true;
     }
@@ -208,6 +227,23 @@ class Manager
         }
 
         return $this;
+    }
+
+    protected function notifyUser()
+    {
+        $this->console->line('');
+
+        if ($this->getProviders()->isRegistered()) {
+            $this->console->line(" <fg=green;bold>✓</> {$this->getProviders()->count()} service provider registered.");
+        }
+
+        if ($this->getFacades()->isRegistered()) {
+            $this->console->line(" <fg=green;bold>✓</> {$this->getFacades()->count()} registered.");
+        }
+
+        if ($this->getMigration()->isRegistered()) {
+            $this->console->line(" <fg=green;bold>✓</> {$this->getMigration()->count()} migration file ran.");
+        }
     }
 }
 

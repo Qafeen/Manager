@@ -5,6 +5,12 @@ use Qafeen\Manager\Traits\Helper;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
+/**
+ * Custom Process builder
+ *
+ * @package Qafeen\Manager
+ * @author  Mohammed Mudasir <hello@mudasir.me>
+ */
 class ProcessBuilder
 {
     use Helper;
