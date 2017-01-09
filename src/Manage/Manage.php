@@ -2,9 +2,9 @@
 
 namespace Qafeen\Manager\Manage;
 
+use hanneskod\classtools\Iterator\ClassIterator;
 use Qafeen\Manager\Traits\Helper;
 use Symfony\Component\Finder\Finder;
-use hanneskod\classtools\Iterator\ClassIterator;
 
 /**
  * Manage.php.
@@ -63,9 +63,9 @@ class Manage
     }
 
     /**
-     * Get classes from given files
+     * Get classes from given files.
      *
-     * @param  Finder $finder
+     * @param Finder $finder
      *
      * @return \Illuminate\Support\Collection
      */
@@ -77,4 +77,3 @@ class Manage
         return collect(array_keys($files));
     }
 }
-

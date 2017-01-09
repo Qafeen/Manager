@@ -3,7 +3,7 @@
 namespace Qafeen\Manager\Manage;
 
 /**
- * Manage Resource
+ * Manage Resource.
  *
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
@@ -19,15 +19,14 @@ class Resource extends Manage
             $this->finder->contains('/class [A-Z]\w+ extends Facade/i')
         )->count();
 
-        if (! $files > 0) {
+        if (!$files > 0) {
             return false;
         }
 
-        if ($this->console->confirm("Publish resource files?")) {
+        if ($this->console->confirm('Publish resource files?')) {
             return $this->console->call('vendor:publish');
         }
 
         return false;
     }
 }
-
