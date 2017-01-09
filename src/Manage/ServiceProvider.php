@@ -2,52 +2,17 @@
 
 namespace Qafeen\Manager\Manage;
 
-use hanneskod\classtools\Iterator\ClassIterator;
-use Qafeen\Manager\Traits\Helper;
-use Symfony\Component\Finder\Finder;
-
 /**
  * Manage Service Provider.
  *
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
-class ServiceProvider
+class ServiceProvider extends Manage
 {
-    use Helper;
-
-    /**
-     * @var \Symfony\Component\Finder\Finder
-     */
-    protected $finder;
-    /**
-     * @var \Illuminate\Console\Command
-     */
-    protected $console;
-
     /**
      * @var \Illuminate\Support\Collection
      */
     protected $providers;
-
-    protected $registered = false;
-
-    /**
-     * ServiceProvider constructor.
-     *
-     * @param \Symfony\Component\Finder\Finder $finder
-     * @param \Illuminate\Console\Command      $console
-     */
-    public function __construct(Finder $finder, $console)
-    {
-        $this->finder = $finder;
-
-        $this->console = $console;
-    }
-
-    public function isRegistered()
-    {
-        return $this->registered;
-    }
 
     /**
      * Start searching service provider in package.
@@ -96,13 +61,9 @@ class ServiceProvider
             return $this->providers;
         }
 
-        $providers = new ClassIterator(
+        return $this->providers = $this->getFileClasses(
             $this->finder->contains('/class [A-Z]\w+ extends ServiceProvider/i')
         );
-
-        // ClassIterator will give you providers, class name as key and path as value
-        // we only need class name for now
-        return $this->providers = collect(array_keys($providers->getClassMap()));
     }
 
     /**

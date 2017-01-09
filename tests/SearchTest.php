@@ -56,6 +56,10 @@ class SearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, $result);
     }
 
+    public function test_resource_file_search()
+    {
+
+    }
 
     public function tearDown()
     {

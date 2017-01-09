@@ -2,7 +2,6 @@
 
 namespace Qafeen\Manager\Manage;
 
-use hanneskod\classtools\Iterator\ClassIterator;
 use Qafeen\Manager\Traits\Helper;
 use Symfony\Component\Finder\Finder;
 
@@ -11,26 +10,12 @@ use Symfony\Component\Finder\Finder;
  *
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
-class Facade
+class Facade extends Manage
 {
-    use Helper;
-
-    /**
-     * @var \Symfony\Component\Finder\Finder
-     */
-    protected $finder;
-
-    /**
-     * @var \Illuminate\Console\Command
-     */
-    protected $console;
-
     /**
      * @var \Illuminate\Support\Collection
      */
     protected $facades;
-
-    protected $registered = false;
 
     /**
      * Facade constructor.
@@ -102,11 +87,9 @@ class Facade
             return $this->facades;
         }
 
-        $facades = new ClassIterator($this->finder->contains('/class [A-Z]\w+ extends Facade/i'));
-
-        // ClassIterator will give you facades, class name as key and path as value
-        // we only need class name for now
-        return $this->facades = collect(array_keys($facades->getClassMap()));
+        return $this->facades = $this->getFileClasses(
+                    $this->finder->contains('/class [A-Z]\w+ extends Facade/i')
+                );
     }
 
     /**

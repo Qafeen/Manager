@@ -2,70 +2,17 @@
 
 namespace Qafeen\Manager\Manage;
 
-use hanneskod\classtools\Iterator\ClassIterator;
-use Qafeen\Manager\Traits\Helper;
-use Symfony\Component\Finder\Finder;
-
 /**
  * Manage Migration.
  *
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
-class Migration
+class Migration extends Manage
 {
-    use Helper;
-
-    /**
-     * @var \Symfony\Component\Finder\Finder
-     */
-    protected $finder;
-
-    /**
-     * @var \Illuminate\Console\Command
-     */
-    protected $console;
-
     /**
      * @var bool
      */
     protected $hasMigrationFile;
-
-    /**
-     * Is file registered.
-     *
-     * @var bool
-     */
-    protected $registered = false;
-
-    /**
-     * Count of migration files.
-     *
-     * @var int
-     */
-    protected $count = 0;
-
-    /**
-     * Facade constructor.
-     *
-     * @param \Symfony\Component\Finder\Finder $finder
-     * @param                                  $console
-     */
-    public function __construct(Finder $finder, $console)
-    {
-        $this->finder = $finder;
-
-        $this->console = $console;
-    }
-
-    /**
-     * File registered and migration ran successfully.
-     *
-     * @return bool
-     */
-    public function isRegistered()
-    {
-        return $this->registered;
-    }
 
     /**
      * Run the migration command.
@@ -102,9 +49,8 @@ class Migration
      */
     public function hasMigrationFile()
     {
-        $migrations = new ClassIterator($this->finder->contains('/class [A-Z]\w+ extends Migration/i'));
-
-        $this->count = count($migrations->getClassMap());
+        $this->count = $this->getFileClasses($this->finder->contains('/class [A-Z]\w+ extends Migration/i'))
+                            ->count();
 
         return $this->hasMigrationFile = $this->count > 0;
     }
