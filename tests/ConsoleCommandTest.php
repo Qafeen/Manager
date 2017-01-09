@@ -9,7 +9,7 @@ class ConsoleCommandTest extends PHPUnit_Framework_TestCase
         m::close();
     }
 
-    public function testAddConsoleCommand()
+    public function test_add_console_command()
     {
         $app = $this->getMockConsole(['addToParent']);
         $command = m::mock('Qafeen\Manager\Console\Add');
