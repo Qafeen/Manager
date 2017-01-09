@@ -18,19 +18,6 @@ class Facade extends Manage
     protected $facades;
 
     /**
-     * Facade constructor.
-     *
-     * @param \Symfony\Component\Finder\Finder $finder
-     * @param                                  $console
-     */
-    public function __construct(Finder $finder, $console)
-    {
-        $this->finder = $finder;
-
-        $this->console = $console;
-    }
-
-    /**
      * Is file registered in config/manger.php.
      *
      * @return bool
@@ -83,11 +70,7 @@ class Facade extends Manage
      */
     public function getFacades()
     {
-        if ($this->facades) {
-            return $this->facades;
-        }
-
-        return $this->facades = $this->getFileClasses(
+        return $this->facades ?: $this->facades = $this->getFileClasses(
                     $this->finder->contains('/class [A-Z]\w+ extends Facade/i')
                 );
     }

@@ -57,11 +57,8 @@ class ServiceProvider extends Manage
      */
     public function getProviders()
     {
-        if ($this->providers) {
-            return $this->providers;
-        }
 
-        return $this->providers = $this->getFileClasses(
+        return $this->providers ?: $this->providers = $this->getFileClasses(
             $this->finder->contains('/class [A-Z]\w+ extends ServiceProvider/i')
         );
     }

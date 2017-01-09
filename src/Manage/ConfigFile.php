@@ -124,12 +124,12 @@ class ConfigFile
             $this->suffixClass($this->$name)
         ));
 
-        $newLine2Tabs = $this->makeTabs(2, true);
+        $newLine2Tabs = PHP_EOL.'        ';
 
         if ($name == 'providers') {
             return "'$name' => [$newLine2Tabs".
                         implode(','.$newLine2Tabs, $classes).
-                    $this->makeTabs(1, true).'],'.PHP_EOL;
+                    PHP_EOL.'    ],'.PHP_EOL;
         }
 
         $template = "'$name' => [$newLine2Tabs";
@@ -138,28 +138,9 @@ class ConfigFile
             $template .= "'{$this->getClassName($fullClassName)}' => $fullClassName,$newLine2Tabs";
         }
 
-        $template .= $this->makeTabs(1, true).'],'.PHP_EOL;
+        $template .= PHP_EOL.'    ],'.PHP_EOL;
 
         return $template;
-    }
-
-    /**
-     * Make tabs and add line break dynamically.
-     *
-     * @param int  $multiply
-     * @param bool $newline
-     *
-     * @return string
-     */
-    protected function makeTabs($multiply = 1, $newline = false)
-    {
-        $tab = (!$newline) ? '    ' : PHP_EOL.'    ';
-
-        if ($multiply == 0) {
-            return '';
-        }
-
-        return $tab.$this->makeTabs($multiply - 1);
     }
 
     /**
