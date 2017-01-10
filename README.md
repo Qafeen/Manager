@@ -1,8 +1,10 @@
 <p align="center">
-  <img src="https://s-media-cache-ak0.pinimg.com/564x/eb/99/06/eb990621cef085814404e5e6964b95b7.jpg" width="230px" />
+  <img src="https://s-media-cache-ak0.pinimg.com/564x/eb/99/06/eb990621cef085814404e5e6964b95b7.jpg" width="230px" alt="Laravel Package Manager Logo" />
 </p>
 
-<h1 align="center">Laravel Package Manager</h1>
+<h1 align="center">
+    <img src="https://cloud.githubusercontent.com/assets/7669734/21817852/aa9fddfa-d78b-11e6-8f5a-6a2d9e62edeb.png" alt="Laravel Package Manager" />
+</h1>
 
 <p align="center">
 <a href="https://travis-ci.org/Qafeen/Manager"><img src="https://travis-ci.org/Qafeen/Manager.svg?branch=master" /></a> 
@@ -15,8 +17,9 @@
 1. Register Service provider and facade.
 2. Search relevant package.
 3. Run migration.
-4. Run necessary command specific to a package (coming soon).
-5. Uninstall package (comming soon).
+4. Publish Resource and vue files (comming soon).
+5. Run necessary command specific to a package (coming soon).
+6. Uninstall package (comming soon).
 
 ## Installation:
 Get manager package.
