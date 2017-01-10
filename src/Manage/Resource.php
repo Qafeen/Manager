@@ -19,7 +19,7 @@ class Resource extends Manage
         $publishCommand = 'vendor:publish';
         $this->console->info('Searching directory for vue and blade files.');
 
-        // Get the blade file and vue file count.
+        // Get the blade and vue files count.
         $this->count = $this->finder->name('*.blade.php')->name('*.vue')->count();
 
         if ($this->count == 0) {

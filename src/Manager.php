@@ -90,18 +90,24 @@ class Manager
              ->setConsole($console);
     }
 
+    /**
+     * Run the build
+     *
+     * @return \Qafeen\Manager\Manager
+     *
+     * @throws \ErrorException
+     */
     public function build()
     {
         $providers = $this->getProviders()->search();
         $facades = $this->getFacades()->search();
 
         if (!ConfigFile::instance($providers, $facades)->make()) {
-            throw new ErrorException('Unable to register providers and facades. 
-                Please report this incident at Qafeen/Manager');
+            throw new ErrorException('Unable to register providers and facades. Please report this incident at Qafeen/Manager');
         }
 
         if (!$this->getResources()->publish()) {
-            $this->console->warn('Unable to publish views files. Please report this incident at Qafeen/Manager');
+            $this->console->warn('Unable to publish blade or vue files. Please report this incident at Qafeen/Manager');
         }
 
         return $this;
