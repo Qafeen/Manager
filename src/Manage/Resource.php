@@ -10,7 +10,7 @@ namespace Qafeen\Manager\Manage;
 class Resource extends Manage
 {
     /**
-     * Publish resource files
+     * Publish resource files.
      *
      * @return bool|int
      */
@@ -24,6 +24,7 @@ class Resource extends Manage
 
         if ($this->count == 0) {
             $this->console->warn('No blade or vue file found.');
+
             return true;
         }
 
@@ -32,7 +33,7 @@ class Resource extends Manage
         $this->registered = true;
 
         return $this->console->call($publishCommand, [
-            '--tag' => $tag
+            '--tag' => $tag,
         ]);
     }
 
