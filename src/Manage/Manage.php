@@ -53,7 +53,7 @@ class Manage
      * Facade constructor.
      *
      * @param \Symfony\Component\Finder\Finder $finder
-     * @param \Illuminate\Console\Command      $console
+     * @param \Qafeen\Manager\Console\Add      $console
      */
     public function __construct(Finder $finder, $console)
     {

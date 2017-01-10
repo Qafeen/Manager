@@ -9,24 +9,40 @@ namespace Qafeen\Manager\Manage;
  */
 class Resource extends Manage
 {
-    protected $resources;
-
+    /**
+     * Publish resource files
+     *
+     * @return bool|int
+     */
     public function publish()
     {
+        $publishCommand = 'vendor:publish';
         $this->console->info('Searching directory for vue and blade files.');
 
-        $files = $this->getFileClasses(
-            $this->finder->contains('/class [A-Z]\w+ extends Facade/i')
-        )->count();
+        // Get the blade file and vue file count.
+        $this->count = $this->finder->name('*.blade.php')->name('*.vue')->count();
 
-        if (!$files > 0) {
-            return false;
+        if ($this->count == 0) {
+            $this->console->warn('No blade or vue file found.');
+            return true;
         }
 
-        if ($this->console->confirm('Publish resource files?')) {
-            return $this->console->call('vendor:publish');
-        }
+        $tag = $this->console->ask("If the \"{$this->console->tokenizePackageInfo()['name']}\" has specify vendor publish tag in installation guide then please add it here or press enter to skip adding tag.", false);
 
-        return false;
+        $this->registered = true;
+
+        return $this->console->call($publishCommand, [
+            '--tag' => $tag
+        ]);
+    }
+
+    /**
+     * Get the total resource files count.
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return $this->count;
     }
 }

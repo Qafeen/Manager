@@ -89,6 +89,10 @@ class Add extends Command
     /**
      * Get the package name and version provided by user.
      *
+     * Note: We will not store package information in Add command instance
+     * due to possibility of it might be call again in a loop if user
+     * provided an invalid package ID.
+     *
      * @return array
      */
     public function tokenizePackageInfo()

@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 use Qafeen\Manager\Manage\ConfigFile;
 use Qafeen\Manager\Manage\Facade;
 use Qafeen\Manager\Manage\Migration;
+use Qafeen\Manager\Manage\Resource;
 use Qafeen\Manager\Manage\ServiceProvider;
 use Qafeen\Manager\Traits\Helper;
 use Symfony\Component\Finder\Finder;
@@ -60,9 +61,14 @@ class Manager
     protected $migration;
 
     /**
+     * @var \Qafeen\Manager\Manage\Resource
+     */
+    protected $resources;
+
+    /**
      * Console class to notify user.
      *
-     * @var \Illuminate\Console\Command
+     * @var \Qafeen\Manager\Console\Add
      */
     protected $console;
 
@@ -86,24 +92,48 @@ class Manager
 
     public function build()
     {
-        return ConfigFile::instance(
-                    $this->getProviders()->search(),
-                    $this->getFacades()->search()
-                )->make();
+        $providers = $this->getProviders()->search();
+        $facades = $this->getFacades()->search();
+
+        if (!ConfigFile::instance($providers, $facades)->make()) {
+            throw new ErrorException('Unable to register providers and facades. 
+                Please report this incident at Qafeen/Manager');
+        }
+
+        if (!$this->getResources()->publish()) {
+            $this->console->warn('Unable to publish views files. Please report this incident at Qafeen/Manager');
+        }
+
+        return $this;
     }
 
+    /**
+     * Get Service Providers
+     *
+     * @return ServiceProvider
+     */
     public function getProviders()
     {
         return $this->providers ?:
             $this->providers = new ServiceProvider(clone $this->getFiles(), $this->console);
     }
 
+    /**
+     * Get Facades
+     *
+     * @return Facade
+     */
     public function getFacades()
     {
         return $this->facades ?:
             $this->facades = new Facade(clone $this->getFiles(), $this->console);
     }
 
+    /**
+     * Get migration
+     *
+     * @return Migration
+     */
     public function getMigration()
     {
         return $this->migration ?:
@@ -119,20 +149,9 @@ class Manager
      */
     public function install()
     {
-        if ($this->hasManagerFile()) {
-            return $this->loadManagerFile();
-        }
+        $this->build()->getMigration()->run();
 
-        if (!$this->build()) {
-            throw new ErrorException('Unable to register providers and facades. 
-                Please report this incident at Qafeen/Manager');
-        }
-
-        $this->getMigration()->run();
-
-        $this->notifyUser();
-
-        return true;
+        return $this->notifyUser();
     }
 
     /**
@@ -235,20 +254,51 @@ class Manager
         return $this;
     }
 
+    /**
+     * Notify user.
+     *
+     * @return bool
+     */
     protected function notifyUser()
     {
         $this->console->line('');
 
-        if ($this->getProviders()->isRegistered()) {
-            $this->console->line(" <fg=green;bold>✓</> {$this->getProviders()->count()} service provider registered.");
-        }
+        $this->console->line("{$this->isDone($this->getProviders()->isRegistered())} ".
+            "{$this->getProviders()->count()} service provider registered.");
 
-        if ($this->getFacades()->isRegistered()) {
-            $this->console->line(" <fg=green;bold>✓</> {$this->getFacades()->count()} registered.");
-        }
+        $this->console->line("{$this->isDone($this->getFacades()->isRegistered())} ".
+            "{$this->getFacades()->count()} facade registered.");
 
-        if ($this->getMigration()->isRegistered()) {
-            $this->console->line(" <fg=green;bold>✓</> {$this->getMigration()->count()} migration file ran.");
-        }
+        $this->console->line("{$this->isDone($this->getMigration()->isRegistered())} ".
+            "{$this->getMigration()->count()} migration file ran.");
+
+        $this->console->line("{$this->isDone($this->getResources()->isRegistered())} ".
+            "{$this->getResources()->count()} \"".$this->console->tokenizePackageInfo()['name'].
+            "\" resource file publish.");
+
+        return true;
+    }
+
+    /**
+     * Get resource instance.
+     *
+     * @return \Qafeen\Manager\Manage\Resource
+     */
+    public function getResources()
+    {
+        return $this->resources ?:
+            $this->resources = Resource::instance(clone $this->getFiles(), $this->console);
+    }
+
+    /**
+     * Get the correct symbol on bases of done and not done.
+     *
+     * @param $ans
+     *
+     * @return string
+     */
+    protected function isDone($ans)
+    {
+        return $ans ? " <fg=green;bold>✓</>": " <fg=red;bold>✗</>";
     }
 }
