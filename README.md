@@ -3,7 +3,7 @@
 </p>
 
 <h1 align="center">
-    <img src="https://cloud.githubusercontent.com/assets/7669734/21817852/aa9fddfa-d78b-11e6-8f5a-6a2d9e62edeb.png" alt="Laravel Package Manager" />
+    <img src="https://cloud.githubusercontent.com/assets/7669734/21817952/fcb209d8-d78b-11e6-8b84-06d076592be5.png" alt="Laravel Package Manager" />
 </h1>
 
 <p align="center">
