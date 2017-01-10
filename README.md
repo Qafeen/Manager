@@ -14,7 +14,7 @@
 1. Register Service provider and facade.
 2. Search relevant package.
 3. Run migration.
-4. Publish Resource and vue files (comming soon).
+4. Publish blade and vue files.
 5. Run necessary command specific to a package (coming soon).
 6. Uninstall package (comming soon).
 
@@ -50,11 +50,7 @@ php artisan add zizaco/entrust:5.2.x-dev
 ```
 
 ## Notes: 
-1. In the upcoming development, the package will also find files which need to be published to resource or assets directory.
-2. Custom commands which need to be run after migration which will be handled by `manager.yml` file in root directory of the downloaded package.
-3. Manager store your service providers and facades in different file `config/manager.php` and will take care to load it.
-4. Stay tune...
-
+Manager store your service providers and facades in different file `config/manager.php` and will take care to load it.
 
 <a name="Contribution"></a>
 ## Contribution
