@@ -91,11 +91,11 @@ class Manager
     }
 
     /**
-     * Run the build
-     *
-     * @return \Qafeen\Manager\Manager
+     * Run the build.
      *
      * @throws \ErrorException
+     *
+     * @return \Qafeen\Manager\Manager
      */
     public function build()
     {
