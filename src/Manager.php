@@ -114,7 +114,7 @@ class Manager
     }
 
     /**
-     * Get Service Providers
+     * Get Service Providers.
      *
      * @return ServiceProvider
      */
@@ -125,7 +125,7 @@ class Manager
     }
 
     /**
-     * Get Facades
+     * Get Facades.
      *
      * @return Facade
      */
@@ -136,7 +136,7 @@ class Manager
     }
 
     /**
-     * Get migration
+     * Get migration.
      *
      * @return Migration
      */
@@ -280,7 +280,7 @@ class Manager
 
         $this->console->line("{$this->isDone($this->getResources()->isRegistered())} ".
             "{$this->getResources()->count()} \"".$this->console->tokenizePackageInfo()['name'].
-            "\" resource file publish.");
+            '" resource file publish.');
 
         return true;
     }
@@ -305,6 +305,6 @@ class Manager
      */
     protected function isDone($ans)
     {
-        return $ans ? " <fg=green;bold>✓</>": " <fg=red;bold>✗</>";
+        return $ans ? ' <fg=green;bold>✓</>' : ' <fg=red;bold>✗</>';
     }
 }
