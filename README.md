@@ -1,8 +1,5 @@
-<p align="center">
-  <img src="https://s-media-cache-ak0.pinimg.com/564x/eb/99/06/eb990621cef085814404e5e6964b95b7.jpg" width="230px" alt="Laravel Package Manager Logo" />
-</p>
-
 <h1 align="center">
+    <img src="https://s-media-cache-ak0.pinimg.com/564x/eb/99/06/eb990621cef085814404e5e6964b95b7.jpg" width="230px" alt="Logo" />
     <img src="https://cloud.githubusercontent.com/assets/7669734/21817952/fcb209d8-d78b-11e6-8b84-06d076592be5.png" alt="Laravel Package Manager" />
 </h1>
 
