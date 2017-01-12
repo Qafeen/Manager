@@ -42,7 +42,7 @@ Manager will look for the package and give you the results:
 
 Once you selected a package then composer will take care to download it and Manager will find service providers and facades to register. Also manager will look for migration files to run.
 
-![Service providers and facades registration](https://cloud.githubusercontent.com/assets/7669734/21742305/de3ffcac-d511-11e6-96d9-4a9281cd736e.png)
+![Service providers and facades registration](https://cloud.githubusercontent.com/assets/7669734/21902020/4cb15b1a-d920-11e6-9b3a-cd5cbb485b7e.png)
 
 If you are very specific to a package and know what you want to download then you can do it directly:
 ```bash
