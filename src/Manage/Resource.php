@@ -12,7 +12,7 @@ class Resource extends Manage
     /**
      * Publish resource files.
      *
-     * @param  string  $provider  package service provider
+     * @param string $provider package service provider
      *
      * @return bool|int
      */
@@ -36,7 +36,7 @@ class Resource extends Manage
 
         return $this->console->call($publishCommand, [
             '--provider' => $provider,
-            '--tag' => $tag,
+            '--tag'      => $tag,
         ]);
     }
 
