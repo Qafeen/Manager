@@ -12,9 +12,11 @@ class Resource extends Manage
     /**
      * Publish resource files.
      *
+     * @param  string  $provider  package service provider
+     *
      * @return bool|int
      */
-    public function publish()
+    public function publish($provider)
     {
         $publishCommand = 'vendor:publish';
         $this->console->info('Searching directory for vue and blade files.');
@@ -33,6 +35,7 @@ class Resource extends Manage
         $this->registered = true;
 
         return $this->console->call($publishCommand, [
+            '--provider' => $provider,
             '--tag' => $tag,
         ]);
     }
