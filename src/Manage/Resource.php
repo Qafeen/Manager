@@ -18,36 +18,23 @@ class Resource extends File
      */
     public function publish($provider)
     {
-        $publishCommand = 'vendor:publish';
-        $this->console->info('Searching directory for vue and blade files.');
+        $class = last(explode('\\', $provider));
 
-        $this->count = $this->finder
-                            ->contains("/$provider".'((.|\n)*)\$this->publishes\(/i')
-                            ->count();
+        $this->console->info("Searching {$provider} to publish vendor file.");
 
-        if ($this->count == 0) {
-            $this->console->warn('No blade, vue or config file found.');
+        if (!$this->finder->contains("/$class".'((.|\n)*)\$this->publishes\(/i')->count()) {
+            $this->console->warn('Nothing to publish.');
 
             return true;
         }
 
         $tag = $this->console->ask("If the \"{$this->console->tokenizePackageInfo()['name']}\" has specify vendor publish tag in installation guide then please add it here or press enter to skip adding tag.", false);
 
-        $this->registered = true;
-
-        return $this->console->call($publishCommand, [
+        $this->console->call('vendor:publish', [
             '--provider' => $provider,
             '--tag'      => $tag,
         ]);
-    }
 
-    /**
-     * Get the total resource files count.
-     *
-     * @return int
-     */
-    public function count()
-    {
-        return $this->count;
+        return $this->registered = true;
     }
 }
