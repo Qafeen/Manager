@@ -21,8 +21,9 @@ class Resource extends File
         $publishCommand = 'vendor:publish';
         $this->console->info('Searching directory for vue and blade files.');
 
-        // Get the blade and vue files count.
-        $this->count = $this->finder->name('*.blade.php')->name('*.vue')->count();
+        $this->count = $this->finder
+                            ->contains("/$provider".'((.|\n)*)\$this->publishes\(/i')
+                            ->count();
 
         if ($this->count == 0) {
             $this->console->warn('No blade, vue or config file found.');

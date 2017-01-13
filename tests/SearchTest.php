@@ -70,7 +70,7 @@ class SearchTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(true, $resource->publish('DummyServiceProvider'));
 
-        $this->assertEquals(2, $resource->count());
+        $this->assertEquals(1, $resource->count());
     }
 
     public function tearDown()

@@ -5,6 +5,7 @@ namespace Qafeen\Manager\Manage;
 use hanneskod\classtools\Iterator\ClassIterator;
 use Qafeen\Manager\Traits\Helper;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 /**
  * Manage.php.
@@ -35,12 +36,12 @@ abstract class File
     /**
      * Count of migration files.
      *
-     * @var int
+     * @var int|null
      */
-    protected $count = 0;
+    protected $count = null;
 
     /**
-     * @var \SplFileInfo[]
+     * @var \hanneskod\classtools\Iterator\SplFileInfo[]
      */
     protected $files;
 
@@ -78,6 +79,8 @@ abstract class File
     {
         $this->files = (new ClassIterator($this->finder->contains($contains)))->getClassMap();
 
+        $this->count = count($this->files);
+
         return $this;
     }
 
@@ -94,10 +97,32 @@ abstract class File
     /**
      * Get files
      *
-     * @return \SplFileInfo[]
+     * @return \hanneskod\classtools\Iterator\SplFileInfo[]
      */
     public function getFiles()
     {
         return $this->files;
+    }
+
+    /**
+     * Get the file by class name
+     *
+     * @param $class
+     *
+     * @throws \Symfony\Component\HttpFoundation\File\Exception\FileException;
+     *
+     * @return \hanneskod\classtools\Iterator\SplFileInfo
+     */
+    public function getFile($class)
+    {
+        if (is_null($this->count)) {
+            return $this->fileHas($class)->getFile($class);
+        }
+
+        if (isset($this->files[$class])) {
+            return $this->files[$class];
+        }
+
+        throw new FileException("File does not exists with given `{$class}` class.");
     }
 }
