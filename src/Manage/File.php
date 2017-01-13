@@ -11,7 +11,7 @@ use Symfony\Component\Finder\Finder;
  *
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
-class Manage
+abstract class File
 {
     use Helper;
 
@@ -40,6 +40,11 @@ class Manage
     protected $count = 0;
 
     /**
+     * @var \SplFileInfo[]
+     */
+    protected $files;
+
+    /**
      * File registered and migration ran successfully.
      *
      * @return bool
@@ -65,15 +70,34 @@ class Manage
     /**
      * Get classes from given files.
      *
-     * @param Finder $finder
+     * @param  $contains
+     *
+     * @return \Qafeen\Manager\Manage\File
+     */
+    public function fileHas($contains)
+    {
+        $this->files = (new ClassIterator($this->finder->contains($contains)))->getClassMap();
+
+        return $this;
+    }
+
+    /**
+     * Get classes from files
      *
      * @return \Illuminate\Support\Collection
      */
-    protected function getFileClasses(Finder $finder)
+    public function getClasses()
     {
-        $files = (new ClassIterator($finder))->getClassMap();
+        return collect(array_keys($this->files));
+    }
 
-        // We only need class name which is stored as key
-        return collect(array_keys($files));
+    /**
+     * Get files
+     *
+     * @return \SplFileInfo[]
+     */
+    public function getFiles()
+    {
+        return $this->files;
     }
 }

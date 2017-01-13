@@ -7,7 +7,7 @@ namespace Qafeen\Manager\Manage;
  *
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
-class Resource extends Manage
+class Resource extends File
 {
     /**
      * Publish resource files.
@@ -25,7 +25,7 @@ class Resource extends Manage
         $this->count = $this->finder->name('*.blade.php')->name('*.vue')->count();
 
         if ($this->count == 0) {
-            $this->console->warn('No blade or vue file found.');
+            $this->console->warn('No blade, vue or config file found.');
 
             return true;
         }

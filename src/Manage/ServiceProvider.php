@@ -7,7 +7,7 @@ namespace Qafeen\Manager\Manage;
  *
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
-class ServiceProvider extends Manage
+class ServiceProvider extends File
 {
     /**
      * @var \Illuminate\Support\Collection
@@ -57,9 +57,8 @@ class ServiceProvider extends Manage
      */
     public function getProviders()
     {
-        return $this->providers ?: $this->providers = $this->getFileClasses(
-            $this->finder->contains('/class [A-Z]\w+ extends ServiceProvider/i')
-        );
+        return $this->providers ?:
+            $this->providers = $this->fileHas('/class [A-Z]\w+ extends ServiceProvider/i')->getClasses();
     }
 
     /**

@@ -2,14 +2,12 @@
 
 namespace Qafeen\Manager\Manage;
 
-use Symfony\Component\Finder\Finder;
-
 /**
  * Manage Service Provider.
  *
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
-class Facade extends Manage
+class Facade extends File
 {
     /**
      * @var \Illuminate\Support\Collection
@@ -69,9 +67,8 @@ class Facade extends Manage
      */
     public function getFacades()
     {
-        return $this->facades ?: $this->facades = $this->getFileClasses(
-                    $this->finder->contains('/class [A-Z]\w+ extends Facade/i')
-                );
+        return $this->facades ?:
+            $this->facades = $this->fileHas('/class [A-Z]\w+ extends Facade/i')->getClasses();
     }
 
     /**

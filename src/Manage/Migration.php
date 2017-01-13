@@ -7,7 +7,7 @@ namespace Qafeen\Manager\Manage;
  *
  * @author Mohammed Mudasir <hello@mudasir.me>
  */
-class Migration extends Manage
+class Migration extends File
 {
     /**
      * @var bool
@@ -49,7 +49,8 @@ class Migration extends Manage
      */
     public function hasMigrationFile()
     {
-        $this->count = $this->getFileClasses($this->finder->contains('/class [A-Z]\w+ extends Migration/i'))
+        $this->count = $this->fileHas('/class [A-Z]\w+ extends Migration/i')
+                            ->getClasses()
                             ->count();
 
         return $this->hasMigrationFile = $this->count > 0;
