@@ -69,8 +69,6 @@ class SearchTest extends PHPUnit_Framework_TestCase
         $resource = Resource::instance(clone $this->finder, $this->console);
 
         $this->assertEquals(true, $resource->publish('DummyServiceProvider'));
-
-        $this->assertEquals(1, $resource->count());
     }
 
     public function tearDown()
