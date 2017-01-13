@@ -85,7 +85,7 @@ abstract class File
     }
 
     /**
-     * Get classes from files
+     * Get classes from files.
      *
      * @return \Illuminate\Support\Collection
      */
@@ -95,7 +95,7 @@ abstract class File
     }
 
     /**
-     * Get files
+     * Get files.
      *
      * @return \hanneskod\classtools\Iterator\SplFileInfo[]
      */
@@ -105,7 +105,7 @@ abstract class File
     }
 
     /**
-     * Get the file by class name
+     * Get the file by class name.
      *
      * @param $class
      *
