@@ -279,7 +279,7 @@ class Manager
             "{$this->getMigration()->count()} migration file ran.");
 
         $this->console->line("{$this->isDone($this->getResources()->isRegistered())} ".
-            "- ".$this->console->tokenizePackageInfo()['name'].
+            '- '.$this->console->tokenizePackageInfo()['name'].
             ' file publish.');
 
         return true;
