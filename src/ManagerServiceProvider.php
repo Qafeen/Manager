@@ -13,15 +13,6 @@ use Qafeen\Manager\Console\Add;
 class ManagerServiceProvider extends ServiceProvider
 {
     /**
-     * Commands which need to be registered.
-     *
-     * @var array
-     */
-    protected $commands = [
-        Add::class,
-    ];
-
-    /**
      * Register the application services.
      *
      * @return void
@@ -30,7 +21,11 @@ class ManagerServiceProvider extends ServiceProvider
     {
         $this->registerByConfig();
 
-        $this->commands($this->commands);
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Add::class,
+            ]);
+        }
     }
 
     public function registerByConfig()

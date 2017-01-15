@@ -106,9 +106,7 @@ class Manager
             throw new ErrorException('Unable to register providers and facades. Please report this incident at Qafeen/Manager');
         }
 
-        if (!$this->getResources()->publish($providers[0])) {
-            $this->console->warn('Unable to publish blade or vue files. Please report this incident at Qafeen/Manager');
-        }
+        $this->getResources()->publish($providers[0]);
 
         return $this;
     }
@@ -167,7 +165,7 @@ class Manager
      */
     public function getFiles()
     {
-        return $this->files ?: $this->files = Finder::create()->in($this->directory);
+        return $this->files ?: $this->files = Finder::create()->in(realpath($this->directory));
     }
 
     /**

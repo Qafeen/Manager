@@ -22,7 +22,7 @@ class Resource extends File
 
         $this->console->info("Searching {$provider} to publish vendor file.");
 
-        if (!$this->finder->contains("/$class".'((.|\n)*)\$this->publishes\(/i')->count()) {
+        if (!$this->finder->contains($class)->contains('/\$this->publishes/i')->count()) {
             $this->console->warn('Nothing to publish.');
 
             return true;
